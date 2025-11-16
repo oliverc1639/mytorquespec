@@ -105,12 +105,49 @@ header {
   margin-left: -10px;
 }
 
+/* container under a make row */
 .sub-list {
-  padding: 4px 10px 8px 33px;
+  padding: 0 0 4px 0;
   background: #111418;
-  font-size: 12px;
   border-bottom: 1px solid #262a2f;
+}
+
+/* generic text when we don't have years yet */
+.sub-placeholder {
+  padding: 4px 10px 8px 33px;
+  font-size: 12px;
   color: #cbd5e0;
+}
+
+/* year rows (under makes with ranges) */
+.year-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px 2px 33px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.year-row:hover {
+  background: #191d22;
+}
+
+.year-toggle {
+  width: 13px;
+  height: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  border: 1px solid #777;
+  background: #222;
+  color: #eee;
+  margin-left: -15px;
+}
+
+.year-label {
+  color: #9fd3ff;
 }
 
 /* RIGHT CONTENT */
@@ -182,7 +219,7 @@ header {
 
   <input id="searchBar"
          type="text"
-         placeholder="Search vehicle or component...">
+         placeholder="Search vehicle or component... (future feature)">
 </header>
 
 <div id="container">
@@ -247,6 +284,34 @@ const allMakes = [
   "Workhorse","Yellow Cab","Yugo","Zundapp"
 ];
 
+// Year ranges for makes we know (all A-brands)
+const makeYearRanges = {
+  "Abarth":           { start: 1950, end: 1969 },
+  "AC":               { start: 1947, end: 1973 },
+  "Acura":            { start: 1986, end: 2025 },
+  "Alfa Romeo":       { start: 1937, end: 2025 },
+  "Allard":           { start: 1946, end: 1954 },
+  "Allstate":         { start: 1952, end: 1953 },
+  "Alpine":           { start: 1963, end: 1974 },
+  "Alvis":            { start: 1950, end: 1967 },
+  "AM General":       { start: 1969, end: 1974 },
+  "American Austin":  { start: 1930, end: 1935 },
+  "American Bantam":  { start: 1936, end: 1941 },
+  "American Motors":  { start: 1958, end: 1988 },
+  "Amphicar":         { start: 1961, end: 1968 },
+  "Apollo":           { start: 1962, end: 1965 },
+  "Apperson":         { start: 1925, end: 1926 },
+  "Armstrong-Siddeley": { start: 1950, end: 1960 },
+  "Arnolt-Bristol":   { start: 1954, end: 1963 },
+  "Arnolt-MG":        { start: 1953, end: 1954 },
+  "Aston Martin":     { start: 1938, end: 2025 },
+  "Auburn":           { start: 1904, end: 1936 },
+  "Audi":             { start: 1969, end: 2025 },
+  "Austin":           { start: 1930, end: 1975 },
+  "Austin-Healey":    { start: 1953, end: 1970 },
+  "Avanti":           { start: 1965, end: 2007 }
+};
+
 const makeListEl = document.getElementById("makeList");
 const alphaBarEl = document.getElementById("alphaBar");
 const contentEl  = document.getElementById("content");
@@ -271,7 +336,7 @@ allMakes.forEach((make) => {
 
   const label = document.createElement("span");
   label.className = "make-label";
-  label.textContent = make;
+  label.textContent = make.toUpperCase(); // visual like RockAuto
 
   li.appendChild(toggle);
   li.appendChild(label);
@@ -286,11 +351,12 @@ allMakes.forEach((make) => {
 
 
 // ----------------------------
-// EXPAND/COLLAPSE
+// EXPAND/COLLAPSE MAKE
 // ----------------------------
 function toggleMake(li) {
   const open = li.dataset.open === "true";
   const toggle = li.querySelector(".toggle");
+  const make = li.dataset.make;
 
   removeSubList(li);
 
@@ -306,16 +372,53 @@ function toggleMake(li) {
 
   const sub = document.createElement("div");
   sub.className = "sub-list";
-  sub.textContent =
-    "Dropdown for " + li.dataset.make + " (years/models coming later).";
+
+  const range = makeYearRanges[make];
+
+  if (range) {
+    // Create a row for each year (newest to oldest)
+    for (let year = range.end; year >= range.start; year--) {
+      const row = document.createElement("div");
+      row.className = "year-row";
+
+      const yearToggle = document.createElement("span");
+      yearToggle.className = "year-toggle";
+      yearToggle.textContent = "+";
+
+      const yearLabel = document.createElement("span");
+      yearLabel.className = "year-label";
+      yearLabel.textContent = year;
+
+      row.appendChild(yearToggle);
+      row.appendChild(yearLabel);
+
+      row.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showYear(make, year);
+      });
+
+      sub.appendChild(row);
+    }
+  } else {
+    // Placeholder for makes we don't have ranges for yet
+    const p = document.createElement("div");
+    p.className = "sub-placeholder";
+    p.textContent =
+      "Years/models for " + make + " coming soon.";
+    sub.appendChild(p);
+  }
 
   li.after(sub);
 
   contentEl.innerHTML = `
-    <h2>${li.dataset.make}</h2>
+    <h2>${make}</h2>
     <div id="results">
-      <p>You selected <strong>${li.dataset.make}</strong>.</p>
-      <p>This will later load years, models, trims, and torque specs.</p>
+      <p>You selected <strong>${make}</strong>.</p>
+      ${
+        range
+          ? `<p>Years listed from ${range.start} to ${range.end}. Click a year for more (future torque specs).</p>`
+          : `<p>Year range not added yet. We'll fill this in later.</p>`
+      }
     </div>
   `;
 }
@@ -325,6 +428,19 @@ function removeSubList(li) {
   if (next && next.classList.contains("sub-list")) next.remove();
 }
 
+// ----------------------------
+// WHEN A YEAR IS CLICKED
+// ----------------------------
+function showYear(make, year) {
+  contentEl.innerHTML = `
+    <h2>${make} – ${year}</h2>
+    <div id="results">
+      <p>You selected <strong>${make}</strong> for the year <strong>${year}</strong>.</p>
+      <p>Later, this is where you'll show systems (engine, suspension, wheels)
+         and finally torque specs for each component.</p>
+    </div>
+  `;
+}
 
 // ----------------------------
 // BUILD ALPHABET BAR
