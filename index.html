@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MyTorqueSpec</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="top-left">
+    <button class="tab active">Torque Catalog</button>
+    <button class="tab">Search</button>
+  </div>
+
+  <input id="searchBar" type="text" placeholder="Search vehicle or component...">
+</header>
+
+<div id="container">
+
+  <!-- LEFT SIDE NAV (ROCKAUTO STYLE) -->
+  <div id="sidebar">
+    <ul id="makeList">
+      <!-- Populated by app.js -->
+    </ul>
+  </div>
+
+  <!-- RIGHT SIDE CONTENT -->
+  <div id="content">
+    <h2>Select a vehicle and component to view torque specs.</h2>
+    <div id="results"></div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
