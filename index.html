@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>MyTorqueSpec</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>MyTorqueSpec</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
   <div class="top-left">
     <button class="tab active">Torque Catalog</button>
-    <button class="tab">Search</button>
   </div>
 
-  <input id="searchBar" type="text" placeholder="Search vehicle or component...">
+  <input id="searchBar" type="text"
+         placeholder="Search vehicle or component (future feature)...">
 </header>
 
 <div id="container">
 
   <!-- LEFT SIDE NAV (ROCKAUTO STYLE) -->
   <div id="sidebar">
-    <ul id="makeList">
-      <!-- Populated by app.js -->
-    </ul>
+    <ul id="makeList"><!-- populated by JS --></ul>
+
+    <!-- Vertical alphabet bar -->
+    <div id="alphaBar">
+      <!-- letters injected by JS -->
+    </div>
   </div>
 
   <!-- RIGHT SIDE CONTENT -->
   <div id="content">
-    <h2>Select a vehicle and component to view torque specs.</h2>
-    <div id="results"></div>
+    <h2>Select a make from the list.</h2>
+    <div id="results">
+      When you expand a make, a dropdown will appear here in the sidebar.
+      Later, you’ll hook that dropdown into real years/models and your
+      torque-spec database.
+    </div>
   </div>
 
 </div>
