@@ -165,6 +165,24 @@ header {
   font-size: 14px;
 }
 
+/* Request Vehicle button */
+#requestBtn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px;
+  background: #4da6ff;
+  color: #111;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+#requestBtn:hover {
+  background: #7bc0ff;
+}
+
 /* Alphabet bar */
 #alphaBar {
   position: absolute;
@@ -235,6 +253,11 @@ header {
     <h2>Select a make from the list.</h2>
     <div id="results">
       Expand a make with the + icon to begin.
+      <button
+        id="requestBtn"
+        onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
+        Request a Vehicle
+      </button>
     </div>
   </div>
 
@@ -657,7 +680,15 @@ function toggleMake(li) {
   if (open) {
     li.dataset.open = "false";
     toggle.textContent = "+";
-    contentEl.innerHTML = `<h2>Select a make from the list.</h2>`;
+    contentEl.innerHTML = `<h2>Select a make from the list.</h2>
+      <div id="results">
+        Expand a make with the + icon to begin.
+        <button
+          id="requestBtn"
+          onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
+          Request a Vehicle
+        </button>
+      </div>`;
     return;
   }
 
@@ -713,6 +744,11 @@ function toggleMake(li) {
           ? `<p>Years listed from ${range.start} to ${range.end}. Click a year for more (future torque specs).</p>`
           : `<p>Year range not added yet. We'll fill this in later.</p>`
       }
+      <button
+        id="requestBtn"
+        onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
+        Request a Vehicle
+      </button>
     </div>
   `;
 }
@@ -732,6 +768,11 @@ function showYear(make, year) {
       <p>You selected <strong>${make}</strong> for the year <strong>${year}</strong>.</p>
       <p>Later, this is where you'll show systems (engine, suspension, wheels)
          and finally torque specs for each component.</p>
+      <button
+        id="requestBtn"
+        onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
+        Request a Vehicle
+      </button>
     </div>
   `;
 }
