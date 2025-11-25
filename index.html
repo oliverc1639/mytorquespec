@@ -412,7 +412,7 @@
       "Dual-Ghia": { start: 1956, end: 1963 },
       "Duesenberg": { start: 1928, end: 1937 },
       "Durant": { start: 1921, end: 1932 },
-      // (rest of ranges unchanged from your original – kept for brevity)
+      // E BRANDS...
       "Eagle": { start: 1988, end: 1998 },
       "Edsel": { start: 1958, end: 1960 },
       "Elcar": { start: 1916, end: 1931 },
@@ -616,18 +616,106 @@
     // ===============================
     // MODEL/TRIM DATA (per make/year)
     // ===============================
-    // When you send me the Abarth data, I'll expand this.
-    // Example for 1969 Abarth based on your RockAuto snippet:
     const modelData = {
       "Abarth": {
         1969: [
-          { trim: "1000", engine: "982cc L4" },
-          { trim: "1300", engine: "1.3L L4" },
-          { trim: "2000", engine: "1.9L L4" },
-          { trim: "SIMCA", engine: "1.3L L4 / 2.0L L4" }
+          { trim: "1000" },
+          { trim: "1300" },
+          { trim: "2000" },
+          { trim: "SIMCA" }
+        ],
+        1968: [
+          { trim: "1000" },
+          { trim: "1300" },
+          { trim: "2000" },
+          { trim: "SIMCA" }
+        ],
+        1967: [
+          { trim: "1000" },
+          { trim: "1300" },
+          { trim: "2000" },
+          { trim: "SIMCA" }
+        ],
+        1966: [
+          { trim: "1000" },
+          { trim: "1150" },
+          { trim: "1600" },
+          { trim: "2000" },
+          { trim: "850" },
+          { trim: "SIMCA" }
+        ],
+        1965: [
+          { trim: "1000" },
+          { trim: "1600" },
+          { trim: "850" },
+          { trim: "SIMCA" }
+        ],
+        1964: [
+          { trim: "1000" },
+          { trim: "1600" },
+          { trim: "850" },
+          { trim: "SIMCA" }
+        ],
+        1963: [
+          { trim: "1000" },
+          { trim: "1600" },
+          { trim: "850" },
+          { trim: "SIMCA" }
+        ],
+        1962: [
+          { trim: "1000" },
+          { trim: "1600" },
+          { trim: "850" },
+          { trim: "SIMCA" }
+        ],
+        1961: [
+          { trim: "1600", engine: "1.6L L4" },
+          { trim: "750" },
+          { trim: "850" }
+        ],
+        1960: [
+          { trim: "1600" },
+          { trim: "750" },
+          { trim: "850" }
+        ],
+        1959: [
+          { trim: "750" }
+        ],
+        1958: [
+          { trim: "750" }
+        ],
+        1957: [
+          { trim: "750" }
+        ],
+        1956: [
+          { trim: "750" }
+        ],
+        1955: [
+          { trim: "204" },
+          { trim: "205" }
+        ],
+        1954: [
+          { trim: "204" },
+          { trim: "205" }
+        ],
+        1953: [
+          { trim: "204" },
+          { trim: "205" }
+        ],
+        1952: [
+          { trim: "204" },
+          { trim: "205" }
+        ],
+        1951: [
+          { trim: "204" },
+          { trim: "205" }
+        ],
+        1950: [
+          { trim: "204" },
+          { trim: "205" }
         ]
       }
-      // more makes/years can be added here
+      // more makes/years can be added later
     };
 
     const makeListEl = document.getElementById("makeList");
@@ -775,7 +863,7 @@
         row.dataset.open = "false";
         toggleEl.textContent = "+";
       } else {
-        // Close any other year-sublist immediately following this row
+        // Close any existing year-sublist right after this row
         if (next && next.classList.contains("year-sublist")) {
           next.remove();
         }
