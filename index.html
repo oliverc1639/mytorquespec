@@ -173,12 +173,26 @@
       cursor: pointer;
       color: #e2e8f0;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 6px;
     }
 
     .trim-row:hover {
       background: #20242b;
+    }
+
+    .trim-toggle {
+      width: 13px;
+      height: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      border: 1px solid #666;
+      background: #222;
+      color: #eee;
+      margin-left: -14px;
+      flex-shrink: 0;
     }
 
     .trim-name {
@@ -188,6 +202,17 @@
     .trim-engine {
       font-size: 11px;
       color: #a0aec0;
+      margin-left: auto;
+    }
+
+    /* nested content under a trim (systems, torque specs later) */
+    .trim-sublist {
+      background: #090b10;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+      padding: 4px 10px 4px 64px;
+      font-size: 11px;
+      color: #cbd5e0;
     }
 
     /* RIGHT CONTENT */
@@ -715,7 +740,7 @@
           { trim: "205" }
         ]
       }
-      // more makes/years can be added later
+      // add more makes later
     };
 
     const makeListEl = document.getElementById("makeList");
@@ -883,6 +908,11 @@
           trims.forEach((t) => {
             const trow = document.createElement("div");
             trow.className = "trim-row";
+            trow.dataset.trim = t.trim;
+
+            const trimToggle = document.createElement("span");
+            trimToggle.className = "trim-toggle";
+            trimToggle.textContent = "+";
 
             const nameSpan = document.createElement("span");
             nameSpan.className = "trim-name";
@@ -892,12 +922,13 @@
             engSpan.className = "trim-engine";
             if (t.engine) engSpan.textContent = t.engine;
 
+            trow.appendChild(trimToggle);
             trow.appendChild(nameSpan);
             trow.appendChild(engSpan);
 
             trow.addEventListener("click", (e) => {
               e.stopPropagation();
-              showTrim(make, year, t);
+              handleTrimClick(make, year, t, trow);
             });
 
             sub.appendChild(trow);
@@ -911,6 +942,45 @@
 
       // Update right panel for the year (overview)
       showYear(make, year);
+    }
+
+    // ----------------------------
+    // WHEN A TRIM IS CLICKED
+    // ----------------------------
+    function handleTrimClick(make, year, trimObj, row) {
+      const alreadyOpen = row.dataset.open === "true";
+      const toggleEl = row.querySelector(".trim-toggle");
+      const next = row.nextElementSibling;
+
+      if (alreadyOpen) {
+        // closing
+        if (next && next.classList.contains("trim-sublist")) {
+          next.remove();
+        }
+        row.dataset.open = "false";
+        toggleEl.textContent = "+";
+      } else {
+        // open: remove existing sublist if any
+        if (next && next.classList.contains("trim-sublist")) {
+          next.remove();
+        }
+
+        const sub = document.createElement("div");
+        sub.className = "trim-sublist";
+        sub.innerHTML = `
+          <div><strong>Systems & components coming soon</strong></div>
+          <div>Make: ${make}</div>
+          <div>Year: ${year}</div>
+          <div>Model/Trim: ${trimObj.trim}</div>
+        `;
+
+        row.after(sub);
+        row.dataset.open = "true";
+        toggleEl.textContent = "–";
+      }
+
+      // Update right panel with the selected trim details
+      showTrim(make, year, trimObj);
     }
 
     function showYear(make, year) {
