@@ -15,811 +15,271 @@
   </script>
 
   <style>
-  /* Layout / colors */
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f0f11;
-    color: #f5f5f5;
-  }
+    /* Layout / colors */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f11;
+      color: #f5f5f5;
+    }
 
-  header {
-    background: #1a1c20;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #333;
-  }
+    header {
+      background: #1a1c20;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #333;
+    }
 
-  .top-left {
-    display: flex;
-    gap: 10px;
-  }
+    .top-left {
+      display: flex;
+      gap: 10px;
+    }
 
-  .tab {
-    background: #2a2d31;
-    padding: 8px 16px;
-    border: none;
-    color: #ccc;
-    cursor: pointer;
-    border-radius: 4px;
-  }
+    .tab {
+      background: #2a2d31;
+      padding: 8px 16px;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+      border-radius: 4px;
+    }
 
-  .tab.active {
-    background: #4da6ff;
-    color: #111;
-    font-weight: bold;
-  }
+    .tab.active {
+      background: #4da6ff;
+      color: #111;
+      font-weight: bold;
+    }
 
-  #searchBar {
-    margin-left: auto;
-    padding: 8px 12px;
-    width: 320px;
-    max-width: 55vw;
-    border-radius: 4px;
-    border: 1px solid #555;
-    background: #111;
-    color: #f5f5f5;
-  }
+    #searchBar {
+      margin-left: auto;
+      padding: 8px 12px;
+      width: 320px;
+      max-width: 55vw;
+      border-radius: 4px;
+      border: 1px solid #555;
+      background: #111;
+      color: #f5f5f5;
+    }
 
-  #container {
-    display: flex;
-    height: calc(100vh - 52px);
-  }
-
-  /* LEFT SIDEBAR */
-  #sidebar {
-    position: relative;
-    width: 320px;
-    background: #1a1c20;
-    overflow-y: auto;
-    border-right: 1px solid #333;
-    padding: 6px 0;
-  }
-
-  #makeList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    padding-right: 22px; /* avoid alpha bar overlap */
-  }
-
-  .make-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px 4px 18px;
-    cursor: pointer;
-    border-bottom: 1px solid #222;
-    font-size: 13px;
-  }
-
-  .make-item:hover {
-    background: #2f3338;
-  }
-
-  .make-label {
-    color: #69a5ff;
-  }
-
-  .toggle {
-    width: 13px;
-    height: 13px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    border: 1px solid #999;
-    background: #222;
-    color: #eee;
-    margin-left: -10px;
-  }
-
-  /* container under a make row */
-  .sub-list {
-    padding: 0 0 4px 0;
-    background: #111418;
-    border-bottom: 1px solid #262a2f;
-  }
-
-  /* generic text when we don't have years yet */
-  .sub-placeholder {
-    padding: 4px 10px 8px 33px;
-    font-size: 12px;
-    color: #cbd5e0;
-  }
-
-  /* year rows (under makes with ranges) */
-  .year-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 10px 2px 33px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-
-  .year-row:hover {
-    background: #191d22;
-  }
-
-  .year-toggle {
-    width: 13px;
-    height: 13px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    border: 1px solid #777;
-    background: #222;
-    color: #eee;
-    margin-left: -15px;
-  }
-
-  .year-label {
-    color: #9fd3ff;
-  }
-
-  /* trim list under a year */
-  .trim-list {
-    padding: 2px 0 4px 48px;
-    background: #101318;
-    border-bottom: 1px solid #1f2328;
-  }
-
-  .trim-row {
-    padding: 2px 10px;
-    font-size: 11.5px;
-    cursor: pointer;
-    color: #d0e2ff;
-  }
-
-  .trim-row:hover {
-    background: #1c2127;
-  }
-
-  /* RIGHT CONTENT */
-  #content {
-    flex: 1;
-    padding: 18px;
-  }
-
-  #results {
-    margin-top: 12px;
-    background: #1a1c20;
-    border: 1px solid #333;
-    padding: 14px;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-
-  #results ul {
-    padding-left: 18px;
-  }
-
-  /* Request Vehicle button */
-  #requestBtn {
-    margin-top: 12px;
-    width: 100%;
-    padding: 10px;
-    background: #4da6ff;
-    color: #111;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 15px;
-  }
-
-  #requestBtn:hover {
-    background: #7bc0ff;
-  }
-
-  /* Alphabet bar */
-  #alphaBar {
-    position: absolute;
-    top: 10px;
-    right: 0;
-    width: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 11px;
-  }
-
-  .alpha-letter {
-    padding: 2px 0;
-    cursor: pointer;
-    color: #7b8ba5;
-  }
-
-  .alpha-letter:hover {
-    color: #ffffff;
-    font-weight: bold;
-  }
-
-  /* Mobile */
-  @media (max-width: 800px) {
     #container {
-      flex-direction: column;
+      display: flex;
+      height: calc(100vh - 52px);
     }
+
+    /* LEFT SIDEBAR */
     #sidebar {
-      width: 100%;
-      height: 45vh;
-    }
-    #content {
-      height: 55vh;
+      position: relative;
+      width: 320px;
+      background: #1a1c20;
       overflow-y: auto;
+      border-right: 1px solid #333;
+      padding: 6px 0;
     }
-  }
+
+    #makeList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      padding-right: 22px; /* avoid alpha bar overlap */
+    }
+
+    .make-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px 4px 18px;
+      cursor: pointer;
+      border-bottom: 1px solid #222;
+      font-size: 13px;
+    }
+
+    .make-item:hover {
+      background: #2f3338;
+    }
+
+    .make-label {
+      color: #69a5ff;
+    }
+
+    .toggle {
+      width: 13px;
+      height: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      border: 1px solid #999;
+      background: #222;
+      color: #eee;
+      margin-left: -10px;
+    }
+
+    /* container under a make row */
+    .sub-list {
+      padding: 0 0 4px 0;
+      background: #111418;
+      border-bottom: 1px solid #262a2f;
+    }
+
+    /* generic text when we don't have years yet */
+    .sub-placeholder {
+      padding: 4px 10px 8px 33px;
+      font-size: 12px;
+      color: #cbd5e0;
+    }
+
+    /* year rows (under makes with ranges) */
+    .year-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 10px 2px 33px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .year-row:hover {
+      background: #191d22;
+    }
+
+    .year-toggle {
+      width: 13px;
+      height: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      border: 1px solid #777;
+      background: #222;
+      color: #eee;
+      margin-left: -15px;
+    }
+
+    .year-label {
+      color: #9fd3ff;
+    }
+
+    /* trims / models under a year */
+    .year-sublist {
+      background: #0f1115;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+    }
+
+    .trim-row {
+      padding: 2px 10px 2px 50px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .trim-row:hover {
+      background: #20242b;
+    }
+
+    .trim-name {
+      font-weight: 500;
+    }
+
+    .trim-engine {
+      font-size: 11px;
+      color: #a0aec0;
+    }
+
+    /* RIGHT CONTENT */
+    #content {
+      flex: 1;
+      padding: 18px;
+    }
+
+    #results {
+      margin-top: 12px;
+      background: #1a1c20;
+      border: 1px solid #333;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    /* Request Vehicle button */
+    #requestBtn {
+      margin-top: 12px;
+      width: 100%;
+      padding: 10px;
+      background: #4da6ff;
+      color: #111;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    #requestBtn:hover {
+      background: #7bc0ff;
+    }
+
+    /* Alphabet bar */
+    #alphaBar {
+      position: absolute;
+      top: 10px;
+      right: 0;
+      width: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 11px;
+    }
+
+    .alpha-letter {
+      padding: 2px 0;
+      cursor: pointer;
+      color: #7b8ba5;
+    }
+
+    .alpha-letter:hover {
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    /* Mobile */
+    @media (max-width: 800px) {
+      #container {
+        flex-direction: column;
+      }
+      #sidebar {
+        width: 100%;
+        height: 45vh;
+      }
+      #content {
+        height: 55vh;
+        overflow-y: auto;
+      }
+    }
   </style>
 </head>
-
 <body>
-
-<header>
-  <div class="top-left">
-    <button class="tab active">Torque Catalog</button>
-  </div>
-
-  <input id="searchBar"
-         type="text"
-         placeholder="Search vehicle or component... (future feature)">
-</header>
-
-<div id="container">
-
-  <!-- LEFT MENU -->
-  <div id="sidebar">
-    <ul id="makeList"></ul>
-    <div id="alphaBar"></div>
-  </div>
-
-  <!-- RIGHT PANEL -->
-  <div id="content">
-    <h2>Select a make from the list.</h2>
-    <div id="results">
-      Expand a make with the + icon to begin.
-      <button
-        id="requestBtn"
-        onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
-        Request a Vehicle
-      </button>
+  <header>
+    <div class="top-left">
+      <button class="tab active">Torque Catalog</button>
     </div>
-  </div>
+    <input id="searchBar" type="text" placeholder="Search vehicle or component... (future feature)">
+  </header>
 
-</div>
+  <div id="container">
+    <!-- LEFT MENU -->
+    <div id="sidebar">
+      <ul id="makeList"></ul>
+      <div id="alphaBar"></div>
+    </div>
 
-<script>
-// ===============================
-// FULL MAKE LIST (FROM ROCKAUTO)
-// ===============================
-const allMakes = [
-  "Abarth","AC","Acura","Alfa Romeo","Allard","Allstate","Alpine","Alvis",
-  "AM General","American Austin","American Bantam","American Motors","Amphicar",
-  "Apollo","Apperson","Armstrong-Siddeley","Arnolt-Bristol","Arnolt-MG",
-  "Aston Martin","Auburn","Audi","Austin","Austin-Healey","Avanti","Bentley",
-  "Berkeley","Bizzarrini","Blackhawk","BMW","Bond","Borgward","Bricklin",
-  "Bristol","Bugatti","Buick","Cadillac","Case","Chandler","Checker","Chevrolet",
-  "Chrysler","Cisitalia","Citroën","Cleveland","Cole","Continental","Cord",
-  "Crosley","Cunningham","Daewoo","DAF","Daihatsu","Daimler","Davis","De Vaux",
-  "Delage","Delahaye","Dellow","DeLorean","Denzel","DeSoto","DeTomaso",
-  "Deutsch-Bonnet","Diana","DKW","Dodge","Doretti","Du Pont","Dual-Ghia",
-  "Duesenberg","Durant","Eagle","Edsel","Elcar","Elva","Erskine","Essex",
-  "Excalibur","Facel Vega","Fairthorpe","Falcon Knight","Fargo","Ferrari",
-  "Fiat","Fisker","Flint","Ford","Franklin","Frazer Nash","Freightliner",
-  "Gardner","Genesis","Geo","Glas","GMC","Goliath","Gordon-Keeble","Graham",
-  "Graham-Paige","Griffith","Haynes","HCS","Healey","Henry J","Hertz","Hillman",
-  "Hino","Hispano-Suiza","Honda","Hotchkiss","HRG","Hudson","Humber","Hummer",
-  "Hupmobile","Hyundai","Ineos","Infiniti","International","Iso","Isuzu",
-  "Iveco","Jaguar","Jeep","Jensen","Jewett","Jordan","Jowett","Kaiser-Frazer",
-  "Karma","Kenworth","Kia","Kissel","Kurtis","Lada","Laforza","Lagonda",
-  "Lamborghini","Lanchester","Lancia","Land Rover","LaSalle","Lea-Francis",
-  "Lexington","Lexus","Lincoln","Locomobile","Lordstown Motors","Lotus","Lucid",
-  "Mack","Maico","Marathon","Marauder","Marcos","Marmon","Marquette","Maserati",
-  "Matra","Maxwell","Maybach","Mazda","McLaren","Mercedes-Benz","Mercury",
-  "Merkur","Messerschmitt","MG","Mini","Mitsubishi","Mitsubishi Fuso",
-  "Mobility Ventures","Monteverdi","Moon","Moretti","Morgan","Morris","Moskvich",
-  "Mullen","Nardi","Nash","Nissan","NSU","Oakland","Oldsmobile","Omega","Opel",
-  "OSCA","Packard","Paige","Panhard","Panoz","Panther","Peerless","Pegaso",
-  "Peterbilt","Peugeot","Pierce-Arrow","Plymouth","Polestar","Pontiac",
-  "Porsche","Qvale","RAM","Reliant","Renault","REO","Rickenbacker","Riley",
-  "Rivian","Roamer","Rockne","Rollin","Rolls-Royce","Roosevelt","Rover","SAAB",
-  "Sabra","Saleen","Salmson","Saturn","Scion","Shelby","Siata","Simca","Singer",
-  "Skoda","Smart","Spyker","SRT","Standard","Star","Stearns-Knight","Sterling",
-  "Stevens-Duryea","Studebaker","Stutz","Subaru","Sunbeam","Suzuki","Swallow",
-  "Talbot-Lago","Tatra","Tesla","Think","Toyota","Triumph","Turner","TVR","UD",
-  "Utilimaster","Vauxhall","Velie","Vespa","Viking","VinFast","Volkswagen",
-  "Volvo","VPG","Wartburg","Westcott","Whippet","Willys","Windsor","Wolseley",
-  "Workhorse","Yellow Cab","Yugo","Zundapp"
-];
-
-// Year ranges for makes we know (all A–Z brands subset)
-const makeYearRanges = {
-  // A BRANDS
-  "Abarth":           { start: 1950, end: 1969 },
-  "AC":               { start: 1947, end: 1973 },
-  "Acura":            { start: 1986, end: 2025 },
-  "Alfa Romeo":       { start: 1937, end: 2025 },
-  "Allard":           { start: 1946, end: 1954 },
-  "Allstate":         { start: 1952, end: 1953 },
-  "Alpine":           { start: 1963, end: 1974 },
-  "Alvis":            { start: 1950, end: 1967 },
-  "AM General":       { start: 1969, end: 1974 },
-  "American Austin":  { start: 1930, end: 1935 },
-  "American Bantam":  { start: 1936, end: 1941 },
-  "American Motors":  { start: 1958, end: 1988 },
-  "Amphicar":         { start: 1961, end: 1968 },
-  "Apollo":           { start: 1962, end: 1965 },
-  "Apperson":         { start: 1925, end: 1926 },
-  "Armstrong-Siddeley": { start: 1950, end: 1960 },
-  "Arnolt-Bristol":   { start: 1954, end: 1963 },
-  "Arnolt-MG":        { start: 1953, end: 1954 },
-  "Aston Martin":     { start: 1938, end: 2025 },
-  "Auburn":           { start: 1904, end: 1936 },
-  "Audi":             { start: 1969, end: 2025 },
-  "Austin":           { start: 1930, end: 1975 },
-  "Austin-Healey":    { start: 1953, end: 1970 },
-  "Avanti":           { start: 1965, end: 2007 },
-
-  // B BRANDS
-  "Bentley":          { start: 1921, end: 2025 },
-  "Berkeley":         { start: 1956, end: 1961 },
-  "Bizzarrini":       { start: 1965, end: 1969 },
-  "Blackhawk":        { start: 1929, end: 1930 },
-  "BMW":              { start: 1932, end: 2026 },
-  "Bond":             { start: 1953, end: 1960 },
-  "Borgward":         { start: 1949, end: 1961 },
-  "Bricklin":         { start: 1974, end: 1976 },
-  "Bristol":          { start: 1946, end: 1974 },
-  "Bugatti":          { start: 1927, end: 2024 },
-  "Buick":            { start: 1909, end: 2026 },
-
-  // C BRANDS
-  "Cadillac":         { start: 1903, end: 2026 },
-  "Case":             { start: 1912, end: 1927 },
-  "Chandler":         { start: 1924, end: 1926 },
-  "Checker":          { start: 1947, end: 1982 },
-  "Chevrolet":        { start: 1915, end: 2026 },
-  "Chrysler":         { start: 1924, end: 2025 },
-  "Cisitalia":        { start: 1947, end: 1952 },
-  "Citroën":          { start: 1946, end: 1975 },
-  "Cleveland":        { start: 1919, end: 1926 },
-  "Cole":             { start: 1910, end: 1925 },
-  "Continental":      { start: 1933, end: 1934 },
-  "Cord":             { start: 1929, end: 1937 },
-  "Crosley":          { start: 1939, end: 1952 },
-  "Cunningham":       { start: 1911, end: 1954 },
-
-  // D BRANDS
-  "Daewoo":           { start: 1998, end: 2002 },
-  "DAF":              { start: 1959, end: 1973 },
-  "Daihatsu":         { start: 1988, end: 1992 },
-  "Daimler":          { start: 1946, end: 1969 },
-  "Davis":            { start: 1925, end: 1925 },
-  "De Vaux":          { start: 1932, end: 1932 },
-  "Delage":           { start: 1929, end: 1953 },
-  "Delahaye":         { start: 1935, end: 1954 },
-  "Dellow":           { start: 1949, end: 1959 },
-  "DeLorean":         { start: 1981, end: 1983 },
-  "Denzel":           { start: 1957, end: 1960 },
-  "DeSoto":           { start: 1929, end: 1961 },
-  "DeTomaso":         { start: 1963, end: 1989 },
-  "Deutsch-Bonnet":   { start: 1955, end: 1961 },
-  "Diana":            { start: 1925, end: 1928 },
-  "DKW":              { start: 1954, end: 1965 },
-  "Dodge":            { start: 1915, end: 2025 },
-  "Doretti":          { start: 1954, end: 1955 },
-  "Du Pont":          { start: 1919, end: 1932 },
-  "Dual-Ghia":        { start: 1956, end: 1963 },
-  "Duesenberg":       { start: 1928, end: 1937 },
-  "Durant":           { start: 1921, end: 1932 },
-
-  // E BRANDS
-  "Eagle":            { start: 1988, end: 1998 },
-  "Edsel":            { start: 1958, end: 1960 },
-  "Elcar":            { start: 1916, end: 1931 },
-  "Elva":             { start: 1958, end: 1966 },
-  "Erskine":          { start: 1927, end: 1930 },
-  "Essex":            { start: 1919, end: 1933 },
-  "Excalibur":        { start: 1965, end: 1993 },
-
-  // F BRANDS
-  "Facel Vega":       { start: 1954, end: 1964 },
-  "Fairthorpe":       { start: 1956, end: 1962 },
-  "Falcon Knight":    { start: 1927, end: 1928 },
-  "Fargo":            { start: 1936, end: 1940 },
-  "Ferrari":          { start: 1950, end: 2025 },
-  "Fiat":             { start: 1947, end: 2025 },
-  "Fisker":           { start: 2012, end: 2024 },
-  "Flint":            { start: 1924, end: 1927 },
-  "Ford":             { start: 1908, end: 2026 },
-  "Franklin":         { start: 1903, end: 1934 },
-  "Frazer Nash":      { start: 1949, end: 1957 },
-  "Freightliner":     { start: 1991, end: 2021 },
-
-  // G BRANDS
-  "Gardner":          { start: 1920, end: 1931 },
-  "Genesis":          { start: 2017, end: 2025 },
-  "Geo":              { start: 1989, end: 1997 },
-  "Glas":             { start: 1955, end: 1968 },
-  "GMC":              { start: 1935, end: 2026 },
-  "Goliath":          { start: 1958, end: 1961 },
-  "Gordon-Keeble":    { start: 1964, end: 1967 },
-  "Graham":           { start: 1930, end: 1941 },
-  "Graham-Paige":     { start: 1928, end: 1930 },
-  "Griffith":         { start: 1964, end: 1966 },
-
-  // H BRANDS
-  "Haynes":           { start: 1923, end: 1925 },
-  "HCS":              { start: 1920, end: 1924 },
-  "Healey":           { start: 1946, end: 1954 },
-  "Henry J":          { start: 1951, end: 1954 },
-  "Hertz":            { start: 1925, end: 1927 },
-  "Hillman":          { start: 1946, end: 1967 },
-  "Hino":             { start: 1984, end: 2014 },
-  "Hispano-Suiza":    { start: 1937, end: 1939 },
-  "Honda":            { start: 1969, end: 2025 },
-  "Hotchkiss":        { start: 1950, end: 1954 },
-  "HRG":              { start: 1946, end: 1956 },
-  "Hudson":           { start: 1922, end: 1957 },
-  "Humber":           { start: 1946, end: 1967 },
-  "Hummer":           { start: 1992, end: 2010 },
-  "Hupmobile":        { start: 1909, end: 1941 },
-  "Hyundai":          { start: 1985, end: 2025 },
-
-  // I BRANDS
-  "Ineos":            { start: 2024, end: 2025 },
-  "Infiniti":         { start: 1990, end: 2025 },
-  "International":    { start: 1907, end: 2025 },
-  "Iso":              { start: 1963, end: 1974 },
-  "Isuzu":            { start: 1961, end: 2025 },
-  "Iveco":            { start: 1980, end: 1990 },
-
-  // J BRANDS
-  "Jaguar":           { start: 1937, end: 2025 },
-  "Jeep":             { start: 1945, end: 2025 },
-  "Jensen":           { start: 1949, end: 1976 },
-  "Jewett":           { start: 1922, end: 1927 },
-  "Jordan":           { start: 1917, end: 1931 },
-  "Jowett":           { start: 1950, end: 1954 },
-
-  // K BRANDS
-  "Kaiser-Frazer":    { start: 1947, end: 1958 },
-  "Karma":            { start: 2017, end: 2025 },
-  "Kenworth":         { start: 1987, end: 2008 },
-  "Kia":              { start: 1993, end: 2026 },
-  "Kissel":           { start: 1928, end: 1930 },
-  "Kurtis":           { start: 1954, end: 1955 },
-
-  // L BRANDS
-  "Lada":             { start: 1987, end: 1997 },
-  "Laforza":          { start: 1989, end: 2001 },
-  "Lagonda":          { start: 1934, end: 1940 },
-  "Lamborghini":      { start: 1964, end: 2025 },
-  "Lanchester":       { start: 1950, end: 1954 },
-  "Lancia":           { start: 1950, end: 1982 },
-  "Land Rover":       { start: 1950, end: 2025 },
-  "LaSalle":          { start: 1927, end: 1940 },
-  "Lea-Francis":      { start: 1950, end: 1954 },
-  "Lexington":        { start: 1923, end: 1927 },
-  "Lexus":            { start: 1990, end: 2025 },
-  "Lincoln":          { start: 1920, end: 2025 },
-  "Locomobile":       { start: 1908, end: 1929 },
-  "Lordstown Motors": { start: 2023, end: 2023 },
-  "Lotus":            { start: 1957, end: 2025 },
-  "Lucid":            { start: 2022, end: 2025 },
-
-  // M BRANDS
-  "Mack":             { start: 1980, end: 2001 },
-  "Maico":            { start: 1955, end: 1960 },
-  "Marathon":         { start: 1953, end: 1956 },
-  "Marauder":         { start: 1950, end: 1952 },
-  "Marcos":           { start: 1970, end: 1972 },
-  "Marmon":           { start: 1909, end: 1933 },
-  "Marquette":        { start: 1930, end: 1930 },
-  "Maserati":         { start: 1950, end: 2025 },
-  "Matra":            { start: 1965, end: 1969 },
-  "Maxwell":          { start: 1913, end: 1925 },
-  "Maybach":          { start: 2003, end: 2012 },
-  "Mazda":            { start: 1967, end: 2025 },
-  "McLaren":          { start: 2012, end: 2025 },
-  "Mercedes-Benz":    { start: 1931, end: 2025 },
-  "Mercury":          { start: 1939, end: 2011 },
-  "Merkur":           { start: 1985, end: 1989 },
-  "Messerschmitt":    { start: 1955, end: 1964 },
-  "MG":               { start: 1934, end: 1980 },
-  "Mini":             { start: 2002, end: 2025 },
-  "Mitsubishi":       { start: 1983, end: 2025 },
-  "Mitsubishi Fuso":  { start: 1986, end: 2013 },
-  "Mobility Ventures":{ start: 2014, end: 2017 },
-  "Monteverdi":       { start: 1967, end: 1974 },
-  "Moon":             { start: 1920, end: 1929 },
-  "Moretti":          { start: 1950, end: 1960 },
-  "Morgan":           { start: 1946, end: 2007 },
-  "Morris":           { start: 1949, end: 1974 },
-  "Moskvich":         { start: 1956, end: 1964 },
-  "Mullen":           { start: 2023, end: 2025 },
-
-  // N BRANDS
-  "Nardi":            { start: 1958, end: 1959 },
-  "Nash":             { start: 1918, end: 1962 },
-  "Nissan":           { start: 1958, end: 2025 },
-  "NSU":              { start: 1958, end: 1974 },
-
-  // O BRANDS
-  "Oakland":          { start: 1909, end: 1931 },
-  "Oldsmobile":       { start: 1901, end: 2004 },
-  "Omega":            { start: 1967, end: 1968 },
-  "Opel":             { start: 1947, end: 1975 },
-  "OSCA":             { start: 1955, end: 1967 },
-
-  // P BRANDS
-  "Packard":          { start: 1899, end: 1958 },
-  "Paige":            { start: 1915, end: 1927 },
-  "Panhard":          { start: 1954, end: 1962 },
-  "Panoz":            { start: 1999, end: 2007 },
-  "Panther":          { start: 1972, end: 1974 },
-  "Peerless":         { start: 1920, end: 1960 },
-  "Pegaso":           { start: 1951, end: 1958 },
-  "Peterbilt":        { start: 1965, end: 2013 },
-  "Peugeot":          { start: 1949, end: 2015 },
-  "Pierce-Arrow":     { start: 1901, end: 1938 },
-  "Plymouth":         { start: 1928, end: 2001 },
-  "Polestar":         { start: 2020, end: 2025 },
-  "Pontiac":          { start: 1926, end: 2010 },
-  "Porsche":          { start: 1948, end: 2026 },
-
-  // Q BRAND
-  "Qvale":            { start: 2001, end: 2002 },
-
-  // R BRANDS
-  "RAM":              { start: 2011, end: 2025 },
-  "Reliant":          { start: 1952, end: 1974 },
-  "Renault":          { start: 1947, end: 1987 },
-  "REO":              { start: 1905, end: 1936 },
-  "Rickenbacker":     { start: 1922, end: 1927 },
-  "Riley":            { start: 1946, end: 1963 },
-  "Rivian":           { start: 2022, end: 2025 },
-  "Roamer":           { start: 1916, end: 1930 },
-  "Rockne":           { start: 1932, end: 1933 },
-  "Rollin":           { start: 1924, end: 1925 },
-  "Rolls-Royce":      { start: 1921, end: 2025 },
-  "Roosevelt":        { start: 1929, end: 1930 },
-  "Rover":            { start: 1950, end: 1980 },
-
-  // S BRANDS
-  "SAAB":             { start: 1950, end: 2012 },
-  "Sabra":            { start: 1959, end: 1964 },
-  "Saleen":           { start: 2002, end: 2006 },
-  "Salmson":          { start: 1951, end: 1957 },
-  "Saturn":           { start: 1991, end: 2010 },
-  "Scion":            { start: 2004, end: 2016 },
-  "Shelby":           { start: 1962, end: 2000 },
-  "Siata":            { start: 1949, end: 1970 },
-  "Simca":            { start: 1946, end: 1971 },
-  "Singer":           { start: 1948, end: 1965 },
-  "Skoda":            { start: 1946, end: 1967 },
-  "Smart":            { start: 2008, end: 2019 },
-  "Spyker":           { start: 2005, end: 2019 },
-  "SRT":              { start: 2013, end: 2014 },
-  "Standard":         { start: 1948, end: 1963 },
-  "Star":             { start: 1922, end: 1928 },
-  "Stearns-Knight":   { start: 1920, end: 1930 },
-  "Sterling":         { start: 1987, end: 2010 },
-  "Stevens-Duryea":   { start: 1907, end: 1927 },
-  "Studebaker":       { start: 1904, end: 1966 },
-  "Stutz":            { start: 1912, end: 1974 },
-  "Subaru":           { start: 1968, end: 2025 },
-  "Sunbeam":          { start: 1948, end: 1975 },
-  "Suzuki":           { start: 1985, end: 2013 },
-  "Swallow":          { start: 1954, end: 1955 },
-
-  // T BRANDS
-  "Talbot-Lago":      { start: 1937, end: 1939 },
-  "Tatra":            { start: 1953, end: 1968 },
-  "Tesla":            { start: 2008, end: 2025 },
-  "Think":            { start: 2011, end: 2011 },
-  "Toyota":           { start: 1958, end: 2025 },
-  "Triumph":          { start: 1949, end: 1981 },
-  "Turner":           { start: 1955, end: 1966 },
-  "TVR":              { start: 1957, end: 1977 },
-
-  // U BRANDS
-  "UD":               { start: 1989, end: 2013 },
-  "Utilimaster":      { start: 1989, end: 1994 },
-
-  // V BRANDS
-  "Vauxhall":         { start: 1957, end: 1963 },
-  "Velie":            { start: 1917, end: 1919 },
-  "Vespa":            { start: 1958, end: 1961 },
-  "Viking":           { start: 1929, end: 1930 },
-  "VinFast":          { start: 2023, end: 2025 },
-  "Volkswagen":       { start: 1945, end: 2025 },
-  "Volvo":            { start: 1946, end: 2025 },
-  "VPG":              { start: 2011, end: 2012 },
-
-  // W BRANDS
-  "Wartburg":         { start: 1956, end: 1966 },
-  "Westcott":         { start: 1922, end: 1925 },
-  "Whippet":          { start: 1930, end: 1930 },
-  "Willys":           { start: 1912, end: 1955 },
-  "Windsor":          { start: 1929, end: 1930 },
-  "Wolseley":         { start: 1949, end: 1965 },
-  "Workhorse":        { start: 1999, end: 2011 },
-
-  // Y BRANDS
-  "Yellow Cab":       { start: 1925, end: 1929 },
-  "Yugo":             { start: 1986, end: 1992 },
-
-  // Z BRAND
-  "Zundapp":          { start: 1956, end: 1958 },
-};
-
-// ===============================
-// TRIMS PER MAKE/YEAR (ABARTH)
-// ===============================
-const trimsByMakeYear = {
-  "Abarth": {
-    1969: [
-      "1000 982cc L4",
-      "1300 1.3L L4",
-      "2000 1.9L L4",
-      "SIMCA 1.3L L4",
-      "SIMCA 2.0L L4"
-    ],
-    1968: [
-      "1000 982cc L4",
-      "1300 1.3L L4",
-      "2000 1.9L L4",
-      "SIMCA 1.3L L4",
-      "SIMCA 2.0L L4"
-    ],
-    1967: [
-      "1000 982cc L4",
-      "1300 1.3L L4",
-      "2000 1.9L L4",
-      "SIMCA 1.3L L4",
-      "SIMCA 2.0L L4"
-    ],
-    1966: [
-      "1000 982cc L4",
-      "1150 1.1L L4",
-      "1600 1.6L L4",
-      "2000 1.9L L4",
-      "850 847cc L4",
-      "SIMCA 1.3L L4",
-      "SIMCA 2.0L L4"
-    ],
-    1965: [
-      "1000 982cc L4",
-      "1600 1.6L L4",
-      "850 847cc L4",
-      "SIMCA 1.3L L4",
-      "SIMCA 2.0L L4"
-    ],
-    1964: [
-      "1000 982cc L4",
-      "1600 1.6L L4",
-      "850 847cc L4",
-      "SIMCA 1.3L L4",
-      "SIMCA 2.0L L4"
-    ],
-    1963: [
-      "1000 982cc L4",
-      "1600 1.6L L4",
-      "850 847cc L4",
-      "SIMCA 1.3L L4",
-      "SIMCA 2.0L L4"
-    ],
-    1962: [
-      "1000 982cc L4",
-      "1600 1.6L L4",
-      "850 847cc L4",
-      "SIMCA 1.3L L4",
-      "SIMCA 2.0L L4"
-    ],
-    1961: [
-      "1600 1.6L L4",
-      "750 747cc L4",
-      "850 833cc L4"
-    ],
-    1960: [
-      "1600 1.6L L4",
-      "750 747cc L4",
-      "850 833cc L4"
-    ],
-    1959: [
-      "750 747cc L4"
-    ],
-    1958: [
-      "750 747cc L4"
-    ],
-    1957: [
-      "750 747cc L4"
-    ],
-    1956: [
-      "750 747cc L4"
-    ],
-    1955: [
-      "204 1.1L L4",
-      "205 1.1L L4"
-    ],
-    1954: [
-      "204 1.1L L4",
-      "205 1.1L L4"
-    ],
-    1953: [
-      "204 1.1L L4",
-      "205 1.1L L4"
-    ],
-    1952: [
-      "204 1.1L L4",
-      "205 1.1L L4"
-    ],
-    1951: [
-      "204 1.1L L4",
-      "205 1.1L L4"
-    ],
-    1950: [
-      "204 1.1L L4",
-      "205 1.1L L4"
-    ]
-  }
-};
-
-const makeListEl = document.getElementById("makeList");
-const alphaBarEl = document.getElementById("alphaBar");
-const contentEl  = document.getElementById("content");
-
-const firstMakeForLetter = {};
-
-
-// ----------------------------
-// BUILD MAKE LIST
-// ----------------------------
-allMakes.forEach((make) => {
-  const li = document.createElement("li");
-  li.className = "make-item";
-  li.dataset.make = make;
-
-  const letter = make[0].toUpperCase();
-  if (!firstMakeForLetter[letter]) firstMakeForLetter[letter] = li;
-
-  const toggle = document.createElement("span");
-  toggle.className = "toggle";
-  toggle.textContent = "+";
-
-  const label = document.createElement("span");
-  label.className = "make-label";
-  label.textContent = make.toUpperCase(); // visual like RockAuto
-
-  li.appendChild(toggle);
-  li.appendChild(label);
-
-  li.addEventListener("click", (e) => {
-    e.stopPropagation();
-    toggleMake(li);
-  });
-
-  makeListEl.appendChild(li);
-});
-
-
-// ----------------------------
-// EXPAND/COLLAPSE MAKE
-// ----------------------------
-function toggleMake(li) {
-  const open = li.dataset.open === "true";
-  const toggle = li.querySelector(".toggle");
-  const make = li.dataset.make;
-
-  removeSubList(li);
-
-  if (open) {
-    li.dataset.open = "false";
-    toggle.textContent = "+";
-    contentEl.innerHTML = `<h2>Select a make from the list.</h2>
+    <!-- RIGHT PANEL -->
+    <div id="content">
+      <h2>Select a make from the list.</h2>
       <div id="results">
         Expand a make with the + icon to begin.
         <button
@@ -827,209 +287,599 @@ function toggleMake(li) {
           onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
           Request a Vehicle
         </button>
-      </div>`;
-    return;
-  }
-
-  li.dataset.open = "true";
-  toggle.textContent = "–";
-
-  const sub = document.createElement("div");
-  sub.className = "sub-list";
-
-  const range = makeYearRanges[make];
-
-  if (range) {
-    // Create a row for each year (newest to oldest)
-    for (let year = range.end; year >= range.start; year--) {
-      const row = document.createElement("div");
-      row.className = "year-row";
-      row.dataset.make = make;
-      row.dataset.year = String(year);
-
-      const yearToggle = document.createElement("span");
-      yearToggle.className = "year-toggle";
-      yearToggle.textContent = "+";
-
-      const yearLabel = document.createElement("span");
-      yearLabel.className = "year-label";
-      yearLabel.textContent = year;
-
-      row.appendChild(yearToggle);
-      row.appendChild(yearLabel);
-
-      row.addEventListener("click", (e) => {
-        e.stopPropagation();
-        toggleYear(row, make, year);
-      });
-
-      sub.appendChild(row);
-    }
-  } else {
-    // Placeholder for makes we don't have ranges for yet
-    const p = document.createElement("div");
-    p.className = "sub-placeholder";
-    p.textContent =
-      "Years/models for " + make + " coming soon.";
-    sub.appendChild(p);
-  }
-
-  li.after(sub);
-
-  const rangeText = range
-    ? `Years listed from ${range.start} to ${range.end}. Click a year to see trims (where available) and future torque specs.`
-    : `Year range not added yet. We'll fill this in later.`;
-
-  contentEl.innerHTML = `
-    <h2>${make}</h2>
-    <div id="results">
-      <p>You selected <strong>${make}</strong>.</p>
-      <p>${rangeText}</p>
-      <button
-        id="requestBtn"
-        onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
-        Request a Vehicle
-      </button>
+      </div>
     </div>
-  `;
-}
+  </div>
 
-function removeSubList(li) {
-  const next = li.nextElementSibling;
-  if (next && next.classList.contains("sub-list")) next.remove();
-}
+  <script>
+    // ===============================
+    // FULL MAKE LIST (FROM ROCKAUTO)
+    // ===============================
+    const allMakes = [
+      "Abarth","AC","Acura","Alfa Romeo","Allard","Allstate","Alpine","Alvis",
+      "AM General","American Austin","American Bantam","American Motors","Amphicar",
+      "Apollo","Apperson","Armstrong-Siddeley","Arnolt-Bristol","Arnolt-MG",
+      "Aston Martin","Auburn","Audi","Austin","Austin-Healey","Avanti","Bentley",
+      "Berkeley","Bizzarrini","Blackhawk","BMW","Bond","Borgward","Bricklin",
+      "Bristol","Bugatti","Buick","Cadillac","Case","Chandler","Checker","Chevrolet",
+      "Chrysler","Cisitalia","Citroën","Cleveland","Cole","Continental","Cord",
+      "Crosley","Cunningham","Daewoo","DAF","Daihatsu","Daimler","Davis","De Vaux",
+      "Delage","Delahaye","Dellow","DeLorean","Denzel","DeSoto","DeTomaso",
+      "Deutsch-Bonnet","Diana","DKW","Dodge","Doretti","Du Pont","Dual-Ghia",
+      "Duesenberg","Durant","Eagle","Edsel","Elcar","Elva","Erskine","Essex",
+      "Excalibur","Facel Vega","Fairthorpe","Falcon Knight","Fargo","Ferrari",
+      "Fiat","Fisker","Flint","Ford","Franklin","Frazer Nash","Freightliner",
+      "Gardner","Genesis","Geo","Glas","GMC","Goliath","Gordon-Keeble","Graham",
+      "Graham-Paige","Griffith","Haynes","HCS","Healey","Henry J","Hertz","Hillman",
+      "Hino","Hispano-Suiza","Honda","Hotchkiss","HRG","Hudson","Humber","Hummer",
+      "Hupmobile","Hyundai","Ineos","Infiniti","International","Iso","Isuzu",
+      "Iveco","Jaguar","Jeep","Jensen","Jewett","Jordan","Jowett","Kaiser-Frazer",
+      "Karma","Kenworth","Kia","Kissel","Kurtis","Lada","Laforza","Lagonda",
+      "Lamborghini","Lanchester","Lancia","Land Rover","LaSalle","Lea-Francis",
+      "Lexington","Lexus","Lincoln","Locomobile","Lordstown Motors","Lotus","Lucid",
+      "Mack","Maico","Marathon","Marauder","Marcos","Marmon","Marquette","Maserati",
+      "Matra","Maxwell","Maybach","Mazda","McLaren","Mercedes-Benz","Mercury",
+      "Merkur","Messerschmitt","MG","Mini","Mitsubishi","Mitsubishi Fuso",
+      "Mobility Ventures","Monteverdi","Moon","Moretti","Morgan","Morris","Moskvich",
+      "Mullen","Nardi","Nash","Nissan","NSU","Oakland","Oldsmobile","Omega","Opel",
+      "OSCA","Packard","Paige","Panhard","Panoz","Panther","Peerless","Pegaso",
+      "Peterbilt","Peugeot","Pierce-Arrow","Plymouth","Polestar","Pontiac",
+      "Porsche","Qvale","RAM","Reliant","Renault","REO","Rickenbacker","Riley",
+      "Rivian","Roamer","Rockne","Rollin","Rolls-Royce","Roosevelt","Rover","SAAB",
+      "Sabra","Saleen","Salmson","Saturn","Scion","Shelby","Siata","Simca","Singer",
+      "Skoda","Smart","Spyker","SRT","Standard","Star","Stearns-Knight","Sterling",
+      "Stevens-Duryea","Studebaker","Stutz","Subaru","Sunbeam","Suzuki","Swallow",
+      "Talbot-Lago","Tatra","Tesla","Think","Toyota","Triumph","Turner","TVR","UD",
+      "Utilimaster","Vauxhall","Velie","Vespa","Viking","VinFast","Volkswagen",
+      "Volvo","VPG","Wartburg","Westcott","Whippet","Willys","Windsor","Wolseley",
+      "Workhorse","Yellow Cab","Yugo","Zundapp"
+    ];
 
-// ----------------------------
-// TOGGLE A YEAR (SHOW/HIDE TRIMS)
-// ----------------------------
-function toggleYear(row, make, year) {
-  const open = row.dataset.open === "true";
-  const yearToggle = row.querySelector(".year-toggle");
+    // Year ranges for makes we know (all A-brands + others)
+    const makeYearRanges = {
+      // A BRANDS
+      "Abarth": { start: 1950, end: 1969 },
+      "AC": { start: 1947, end: 1973 },
+      "Acura": { start: 1986, end: 2025 },
+      "Alfa Romeo": { start: 1937, end: 2025 },
+      "Allard": { start: 1946, end: 1954 },
+      "Allstate": { start: 1952, end: 1953 },
+      "Alpine": { start: 1963, end: 1974 },
+      "Alvis": { start: 1950, end: 1967 },
+      "AM General": { start: 1969, end: 1974 },
+      "American Austin": { start: 1930, end: 1935 },
+      "American Bantam": { start: 1936, end: 1941 },
+      "American Motors": { start: 1958, end: 1988 },
+      "Amphicar": { start: 1961, end: 1968 },
+      "Apollo": { start: 1962, end: 1965 },
+      "Apperson": { start: 1925, end: 1926 },
+      "Armstrong-Siddeley": { start: 1950, end: 1960 },
+      "Arnolt-Bristol": { start: 1954, end: 1963 },
+      "Arnolt-MG": { start: 1953, end: 1954 },
+      "Aston Martin": { start: 1938, end: 2025 },
+      "Auburn": { start: 1904, end: 1936 },
+      "Audi": { start: 1969, end: 2025 },
+      "Austin": { start: 1930, end: 1975 },
+      "Austin-Healey": { start: 1953, end: 1970 },
+      "Avanti": { start: 1965, end: 2007 },
+      // B BRANDS
+      "Bentley": { start: 1921, end: 2025 },
+      "Berkeley": { start: 1956, end: 1961 },
+      "Bizzarrini": { start: 1965, end: 1969 },
+      "Blackhawk": { start: 1929, end: 1930 },
+      "BMW": { start: 1932, end: 2026 },
+      "Bond": { start: 1953, end: 1960 },
+      "Borgward": { start: 1949, end: 1961 },
+      "Bricklin": { start: 1974, end: 1976 },
+      "Bristol": { start: 1946, end: 1974 },
+      "Bugatti": { start: 1927, end: 2024 },
+      "Buick": { start: 1909, end: 2026 },
+      // C BRANDS
+      "Cadillac": { start: 1903, end: 2026 },
+      "Case": { start: 1912, end: 1927 },
+      "Chandler": { start: 1924, end: 1926 },
+      "Checker": { start: 1947, end: 1982 },
+      "Chevrolet": { start: 1915, end: 2026 },
+      "Chrysler": { start: 1924, end: 2025 },
+      "Cisitalia": { start: 1947, end: 1952 },
+      "Citroën": { start: 1946, end: 1975 },
+      "Cleveland": { start: 1919, end: 1926 },
+      "Cole": { start: 1910, end: 1925 },
+      "Continental": { start: 1933, end: 1934 },
+      "Cord": { start: 1929, end: 1937 },
+      "Crosley": { start: 1939, end: 1952 },
+      "Cunningham": { start: 1911, end: 1954 },
+      // D BRANDS
+      "Daewoo": { start: 1998, end: 2002 },
+      "DAF": { start: 1959, end: 1973 },
+      "Daihatsu": { start: 1988, end: 1992 },
+      "Daimler": { start: 1946, end: 1969 },
+      "Davis": { start: 1925, end: 1925 },
+      "De Vaux": { start: 1932, end: 1932 },
+      "Delage": { start: 1929, end: 1953 },
+      "Delahaye": { start: 1935, end: 1954 },
+      "Dellow": { start: 1949, end: 1959 },
+      "DeLorean": { start: 1981, end: 1983 },
+      "Denzel": { start: 1957, end: 1960 },
+      "DeSoto": { start: 1929, end: 1961 },
+      "DeTomaso": { start: 1963, end: 1989 },
+      "Deutsch-Bonnet": { start: 1955, end: 1961 },
+      "Diana": { start: 1925, end: 1928 },
+      "DKW": { start: 1954, end: 1965 },
+      "Dodge": { start: 1915, end: 2025 },
+      "Doretti": { start: 1954, end: 1955 },
+      "Du Pont": { start: 1919, end: 1932 },
+      "Dual-Ghia": { start: 1956, end: 1963 },
+      "Duesenberg": { start: 1928, end: 1937 },
+      "Durant": { start: 1921, end: 1932 },
+      // (rest of ranges unchanged from your original – kept for brevity)
+      "Eagle": { start: 1988, end: 1998 },
+      "Edsel": { start: 1958, end: 1960 },
+      "Elcar": { start: 1916, end: 1931 },
+      "Elva": { start: 1958, end: 1966 },
+      "Erskine": { start: 1927, end: 1930 },
+      "Essex": { start: 1919, end: 1933 },
+      "Excalibur": { start: 1965, end: 1993 },
+      "Facel Vega": { start: 1954, end: 1964 },
+      "Fairthorpe": { start: 1956, end: 1962 },
+      "Falcon Knight": { start: 1927, end: 1928 },
+      "Fargo": { start: 1936, end: 1940 },
+      "Ferrari": { start: 1950, end: 2025 },
+      "Fiat": { start: 1947, end: 2025 },
+      "Fisker": { start: 2012, end: 2024 },
+      "Flint": { start: 1924, end: 1927 },
+      "Ford": { start: 1908, end: 2026 },
+      "Franklin": { start: 1903, end: 1934 },
+      "Frazer Nash": { start: 1949, end: 1957 },
+      "Freightliner": { start: 1991, end: 2021 },
+      "Gardner": { start: 1920, end: 1931 },
+      "Genesis": { start: 2017, end: 2025 },
+      "Geo": { start: 1989, end: 1997 },
+      "Glas": { start: 1955, end: 1968 },
+      "GMC": { start: 1935, end: 2026 },
+      "Goliath": { start: 1958, end: 1961 },
+      "Gordon-Keeble": { start: 1964, end: 1967 },
+      "Graham": { start: 1930, end: 1941 },
+      "Graham-Paige": { start: 1928, end: 1930 },
+      "Griffith": { start: 1964, end: 1966 },
+      "Haynes": { start: 1923, end: 1925 },
+      "HCS": { start: 1920, end: 1924 },
+      "Healey": { start: 1946, end: 1954 },
+      "Henry J": { start: 1951, end: 1954 },
+      "Hertz": { start: 1925, end: 1927 },
+      "Hillman": { start: 1946, end: 1967 },
+      "Hino": { start: 1984, end: 2014 },
+      "Hispano-Suiza": { start: 1937, end: 1939 },
+      "Honda": { start: 1969, end: 2025 },
+      "Hotchkiss": { start: 1950, end: 1954 },
+      "HRG": { start: 1946, end: 1956 },
+      "Hudson": { start: 1922, end: 1957 },
+      "Humber": { start: 1946, end: 1967 },
+      "Hummer": { start: 1992, end: 2010 },
+      "Hupmobile": { start: 1909, end: 1941 },
+      "Hyundai": { start: 1985, end: 2025 },
+      "Ineos": { start: 2024, end: 2025 },
+      "Infiniti": { start: 1990, end: 2025 },
+      "International": { start: 1907, end: 2025 },
+      "Iso": { start: 1963, end: 1974 },
+      "Isuzu": { start: 1961, end: 2025 },
+      "Iveco": { start: 1980, end: 1990 },
+      "Jaguar": { start: 1937, end: 2025 },
+      "Jeep": { start: 1945, end: 2025 },
+      "Jensen": { start: 1949, end: 1976 },
+      "Jewett": { start: 1922, end: 1927 },
+      "Jordan": { start: 1917, end: 1931 },
+      "Jowett": { start: 1950, end: 1954 },
+      "Kaiser-Frazer": { start: 1947, end: 1958 },
+      "Karma": { start: 2017, end: 2025 },
+      "Kenworth": { start: 1987, end: 2008 },
+      "Kia": { start: 1993, end: 2026 },
+      "Kissel": { start: 1928, end: 1930 },
+      "Kurtis": { start: 1954, end: 1955 },
+      "Lada": { start: 1987, end: 1997 },
+      "Laforza": { start: 1989, end: 2001 },
+      "Lagonda": { start: 1934, end: 1940 },
+      "Lamborghini": { start: 1964, end: 2025 },
+      "Lanchester": { start: 1950, end: 1954 },
+      "Lancia": { start: 1950, end: 1982 },
+      "Land Rover": { start: 1950, end: 2025 },
+      "LaSalle": { start: 1927, end: 1940 },
+      "Lea-Francis": { start: 1950, end: 1954 },
+      "Lexington": { start: 1923, end: 1927 },
+      "Lexus": { start: 1990, end: 2025 },
+      "Lincoln": { start: 1920, end: 2025 },
+      "Locomobile": { start: 1908, end: 1929 },
+      "Lordstown Motors": { start: 2023, end: 2023 },
+      "Lotus": { start: 1957, end: 2025 },
+      "Lucid": { start: 2022, end: 2025 },
+      "Mack": { start: 1980, end: 2001 },
+      "Maico": { start: 1955, end: 1960 },
+      "Marathon": { start: 1953, end: 1956 },
+      "Marauder": { start: 1950, end: 1952 },
+      "Marcos": { start: 1970, end: 1972 },
+      "Marmon": { start: 1909, end: 1933 },
+      "Marquette": { start: 1930, end: 1930 },
+      "Maserati": { start: 1950, end: 2025 },
+      "Matra": { start: 1965, end: 1969 },
+      "Maxwell": { start: 1913, end: 1925 },
+      "Maybach": { start: 2003, end: 2012 },
+      "Mazda": { start: 1967, end: 2025 },
+      "McLaren": { start: 2012, end: 2025 },
+      "Mercedes-Benz": { start: 1931, end: 2025 },
+      "Mercury": { start: 1939, end: 2011 },
+      "Merkur": { start: 1985, end: 1989 },
+      "Messerschmitt": { start: 1955, end: 1964 },
+      "MG": { start: 1934, end: 1980 },
+      "Mini": { start: 2002, end: 2025 },
+      "Mitsubishi": { start: 1983, end: 2025 },
+      "Mitsubishi Fuso": { start: 1986, end: 2013 },
+      "Mobility Ventures": { start: 2014, end: 2017 },
+      "Monteverdi": { start: 1967, end: 1974 },
+      "Moon": { start: 1920, end: 1929 },
+      "Moretti": { start: 1950, end: 1960 },
+      "Morgan": { start: 1946, end: 2007 },
+      "Morris": { start: 1949, end: 1974 },
+      "Moskvich": { start: 1956, end: 1964 },
+      "Mullen": { start: 2023, end: 2025 },
+      "Nardi": { start: 1958, end: 1959 },
+      "Nash": { start: 1918, end: 1962 },
+      "Nissan": { start: 1958, end: 2025 },
+      "NSU": { start: 1958, end: 1974 },
+      "Oakland": { start: 1909, end: 1931 },
+      "Oldsmobile": { start: 1901, end: 2004 },
+      "Omega": { start: 1967, end: 1968 },
+      "Opel": { start: 1947, end: 1975 },
+      "OSCA": { start: 1955, end: 1967 },
+      "Packard": { start: 1899, end: 1958 },
+      "Paige": { start: 1915, end: 1927 },
+      "Panhard": { start: 1954, end: 1962 },
+      "Panoz": { start: 1999, end: 2007 },
+      "Panther": { start: 1972, end: 1974 },
+      "Peerless": { start: 1920, end: 1960 },
+      "Pegaso": { start: 1951, end: 1958 },
+      "Peterbilt": { start: 1965, end: 2013 },
+      "Peugeot": { start: 1949, end: 2015 },
+      "Pierce-Arrow": { start: 1901, end: 1938 },
+      "Plymouth": { start: 1928, end: 2001 },
+      "Polestar": { start: 2020, end: 2025 },
+      "Pontiac": { start: 1926, end: 2010 },
+      "Porsche": { start: 1948, end: 2026 },
+      "Qvale": { start: 2001, end: 2002 },
+      "RAM": { start: 2011, end: 2025 },
+      "Reliant": { start: 1952, end: 1974 },
+      "Renault": { start: 1947, end: 1987 },
+      "REO": { start: 1905, end: 1936 },
+      "Rickenbacker": { start: 1922, end: 1927 },
+      "Riley": { start: 1946, end: 1963 },
+      "Rivian": { start: 2022, end: 2025 },
+      "Roamer": { start: 1916, end: 1930 },
+      "Rockne": { start: 1932, end: 1933 },
+      "Rollin": { start: 1924, end: 1925 },
+      "Rolls-Royce": { start: 1921, end: 2025 },
+      "Roosevelt": { start: 1929, end: 1930 },
+      "Rover": { start: 1950, end: 1980 },
+      "SAAB": { start: 1950, end: 2012 },
+      "Sabra": { start: 1959, end: 1964 },
+      "Saleen": { start: 2002, end: 2006 },
+      "Salmson": { start: 1951, end: 1957 },
+      "Saturn": { start: 1991, end: 2010 },
+      "Scion": { start: 2004, end: 2016 },
+      "Shelby": { start: 1962, end: 2000 },
+      "Siata": { start: 1949, end: 1970 },
+      "Simca": { start: 1946, end: 1971 },
+      "Singer": { start: 1948, end: 1965 },
+      "Skoda": { start: 1946, end: 1967 },
+      "Smart": { start: 2008, end: 2019 },
+      "Spyker": { start: 2005, end: 2019 },
+      "SRT": { start: 2013, end: 2014 },
+      "Standard": { start: 1948, end: 1963 },
+      "Star": { start: 1922, end: 1928 },
+      "Stearns-Knight": { start: 1920, end: 1930 },
+      "Sterling": { start: 1987, end: 2010 },
+      "Stevens-Duryea": { start: 1907, end: 1927 },
+      "Studebaker": { start: 1904, end: 1966 },
+      "Stutz": { start: 1912, end: 1974 },
+      "Subaru": { start: 1968, end: 2025 },
+      "Sunbeam": { start: 1948, end: 1975 },
+      "Suzuki": { start: 1985, end: 2013 },
+      "Swallow": { start: 1954, end: 1955 },
+      "Talbot-Lago": { start: 1937, end: 1939 },
+      "Tatra": { start: 1953, end: 1968 },
+      "Tesla": { start: 2008, end: 2025 },
+      "Think": { start: 2011, end: 2011 },
+      "Toyota": { start: 1958, end: 2025 },
+      "Triumph": { start: 1949, end: 1981 },
+      "Turner": { start: 1955, end: 1966 },
+      "TVR": { start: 1957, end: 1977 },
+      "UD": { start: 1989, end: 2013 },
+      "Utilimaster": { start: 1989, end: 1994 },
+      "Vauxhall": { start: 1957, end: 1963 },
+      "Velie": { start: 1917, end: 1919 },
+      "Vespa": { start: 1958, end: 1961 },
+      "Viking": { start: 1929, end: 1930 },
+      "VinFast": { start: 2023, end: 2025 },
+      "Volkswagen": { start: 1945, end: 2025 },
+      "Volvo": { start: 1946, end: 2025 },
+      "VPG": { start: 2011, end: 2012 },
+      "Wartburg": { start: 1956, end: 1966 },
+      "Westcott": { start: 1922, end: 1925 },
+      "Whippet": { start: 1930, end: 1930 },
+      "Willys": { start: 1912, end: 1955 },
+      "Windsor": { start: 1929, end: 1930 },
+      "Wolseley": { start: 1949, end: 1965 },
+      "Workhorse": { start: 1999, end: 2011 },
+      "Yellow Cab": { start: 1925, end: 1929 },
+      "Yugo": { start: 1986, end: 1992 },
+      "Zundapp": { start: 1956, end: 1958 }
+    };
 
-  // If open, close and remove trim list
-  if (open) {
-    row.dataset.open = "false";
-    yearToggle.textContent = "+";
-    const next = row.nextElementSibling;
-    if (next && next.classList.contains("trim-list")) {
-      next.remove();
-    }
-    // still show year info on the right
-    showYear(make, year);
-    return;
-  }
+    // ===============================
+    // MODEL/TRIM DATA (per make/year)
+    // ===============================
+    // When you send me the Abarth data, I'll expand this.
+    // Example for 1969 Abarth based on your RockAuto snippet:
+    const modelData = {
+      "Abarth": {
+        1969: [
+          { trim: "1000", engine: "982cc L4" },
+          { trim: "1300", engine: "1.3L L4" },
+          { trim: "2000", engine: "1.9L L4" },
+          { trim: "SIMCA", engine: "1.3L L4 / 2.0L L4" }
+        ]
+      }
+      // more makes/years can be added here
+    };
 
-  // Open this year
-  row.dataset.open = "true";
-  yearToggle.textContent = "–";
+    const makeListEl = document.getElementById("makeList");
+    const alphaBarEl = document.getElementById("alphaBar");
+    const contentEl = document.getElementById("content");
+    const firstMakeForLetter = {};
 
-  // Remove an existing trim-list if somehow present
-  const next = row.nextElementSibling;
-  if (next && next.classList.contains("trim-list")) {
-    next.remove();
-  }
+    // ----------------------------
+    // BUILD MAKE LIST
+    // ----------------------------
+    allMakes.forEach((make) => {
+      const li = document.createElement("li");
+      li.className = "make-item";
+      li.dataset.make = make;
 
-  const trimsForMake = trimsByMakeYear[make] || {};
-  const trims = trimsForMake[year] || [];
+      const letter = make[0].toUpperCase();
+      if (!firstMakeForLetter[letter]) firstMakeForLetter[letter] = li;
 
-  const trimList = document.createElement("div");
-  trimList.className = "trim-list";
+      const toggle = document.createElement("span");
+      toggle.className = "toggle";
+      toggle.textContent = "+";
 
-  if (trims.length === 0) {
-    const empty = document.createElement("div");
-    empty.className = "trim-row";
-    empty.textContent = "Trims coming soon.";
-    // No click because it's just text
-    trimList.appendChild(empty);
-  } else {
-    trims.forEach((trim) => {
-      const tr = document.createElement("div");
-      tr.className = "trim-row";
-      tr.textContent = trim;
-      tr.addEventListener("click", (e) => {
+      const label = document.createElement("span");
+      label.className = "make-label";
+      label.textContent = make.toUpperCase(); // visual like RockAuto
+
+      li.appendChild(toggle);
+      li.appendChild(label);
+
+      li.addEventListener("click", (e) => {
         e.stopPropagation();
-        showTrim(make, year, trim);
+        toggleMake(li);
       });
-      trimList.appendChild(tr);
+
+      makeListEl.appendChild(li);
     });
-  }
 
-  // Insert trim list right after the year row
-  row.after(trimList);
+    // ----------------------------
+    // EXPAND/COLLAPSE MAKE
+    // ----------------------------
+    function toggleMake(li) {
+      const open = li.dataset.open === "true";
+      const toggle = li.querySelector(".toggle");
+      const make = li.dataset.make;
 
-  // Update right panel with year info
-  showYear(make, year, trims.length > 0);
-}
+      removeSubList(li);
 
-// ----------------------------
-// RIGHT PANEL: YEAR-LEVEL VIEW
-// ----------------------------
-function showYear(make, year, hasTrims = false) {
-  const message = hasTrims
-    ? "Select a trim from the list under this year to see torque specs (coming soon)."
-    : "Later, this is where you'll see systems (engine, suspension, wheels) and torque specs for each component.";
+      if (open) {
+        li.dataset.open = "false";
+        toggle.textContent = "+";
+        contentEl.innerHTML = `
+          <h2>Select a make from the list.</h2>
+          <div id="results">
+            Expand a make with the + icon to begin.
+            <button
+              id="requestBtn"
+              onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
+              Request a Vehicle
+            </button>
+          </div>
+        `;
+        return;
+      }
 
-  contentEl.innerHTML = `
-    <h2>${make} – ${year}</h2>
-    <div id="results">
-      <p>You selected <strong>${make}</strong> for the year <strong>${year}</strong>.</p>
-      <p>${message}</p>
-      <button
-        id="requestBtn"
-        onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
-        Request a Vehicle
-      </button>
-    </div>
-  `;
-}
+      li.dataset.open = "true";
+      toggle.textContent = "–";
 
-// ----------------------------
-// RIGHT PANEL: TRIM-LEVEL VIEW
-// ----------------------------
-function showTrim(make, year, trim) {
-  contentEl.innerHTML = `
-    <h2>${make} – ${year}</h2>
-    <div id="results">
-      <p>You selected:</p>
-      <ul>
-        <li><strong>Make:</strong> ${make}</li>
-        <li><strong>Year:</strong> ${year}</li>
-        <li><strong>Trim:</strong> ${trim}</li>
-      </ul>
-      <p>Torque specs for this trim are coming soon.</p>
-      <button
-        id="requestBtn"
-        onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
-        Request a Vehicle
-      </button>
-    </div>
-  `;
-}
+      const sub = document.createElement("div");
+      sub.className = "sub-list";
 
-// ----------------------------
-// BUILD ALPHABET BAR
-// ----------------------------
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach((letter) => {
-  const el = document.createElement("div");
-  el.className = "alpha-letter";
-  el.textContent = letter;
+      const range = makeYearRanges[make];
 
-  el.addEventListener("click", () => scrollToLetter(letter));
+      if (range) {
+        // Create a row for each year (newest to oldest)
+        for (let year = range.end; year >= range.start; year--) {
+          const row = document.createElement("div");
+          row.className = "year-row";
+          row.dataset.year = year;
+          row.dataset.make = make;
 
-  alphaBarEl.appendChild(el);
-});
+          const yearToggle = document.createElement("span");
+          yearToggle.className = "year-toggle";
+          yearToggle.textContent = "+";
 
-function scrollToLetter(letter) {
-  const li = firstMakeForLetter[letter];
-  if (!li) return;
-  const sidebar = document.getElementById("sidebar");
+          const yearLabel = document.createElement("span");
+          yearLabel.className = "year-label";
+          yearLabel.textContent = year;
 
-  sidebar.scrollTo({
-    top: li.offsetTop - 8,
-    behavior: "smooth"
-  });
-}
-</script>
+          row.appendChild(yearToggle);
+          row.appendChild(yearLabel);
 
+          row.addEventListener("click", (e) => {
+            e.stopPropagation();
+            handleYearClick(make, year, row);
+          });
+
+          sub.appendChild(row);
+        }
+      } else {
+        // Placeholder for makes we don't have ranges for yet
+        const p = document.createElement("div");
+        p.className = "sub-placeholder";
+        p.textContent = "Years/models for " + make + " coming soon.";
+        sub.appendChild(p);
+      }
+
+      li.after(sub);
+
+      contentEl.innerHTML = `
+        <h2>${make}</h2>
+        <div id="results">
+          <p>You selected <strong>${make}</strong>.</p>
+          ${
+            range
+              ? `<p>Years listed from ${range.start} to ${range.end}. Click a year to expand models/trims.</p>`
+              : `<p>Year range not added yet. We'll fill this in later.</p>`
+          }
+          <button
+            id="requestBtn"
+            onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
+            Request a Vehicle
+          </button>
+        </div>
+      `;
+    }
+
+    function removeSubList(li) {
+      const next = li.nextElementSibling;
+      if (next && next.classList.contains("sub-list")) next.remove();
+    }
+
+    // ----------------------------
+    // WHEN A YEAR IS CLICKED
+    // ----------------------------
+    function handleYearClick(make, year, row) {
+      const alreadyOpen = row.dataset.open === "true";
+      const toggleEl = row.querySelector(".year-toggle");
+      const next = row.nextElementSibling;
+
+      // Close if open
+      if (alreadyOpen) {
+        if (next && next.classList.contains("year-sublist")) {
+          next.remove();
+        }
+        row.dataset.open = "false";
+        toggleEl.textContent = "+";
+      } else {
+        // Close any other year-sublist immediately following this row
+        if (next && next.classList.contains("year-sublist")) {
+          next.remove();
+        }
+
+        const sub = document.createElement("div");
+        sub.className = "year-sublist";
+
+        const trims =
+          (modelData[make] && modelData[make][year]) ? modelData[make][year] : [];
+
+        if (trims.length === 0) {
+          const p = document.createElement("div");
+          p.className = "sub-placeholder";
+          p.textContent = `Models/trims for ${make} ${year} coming soon.`;
+          sub.appendChild(p);
+        } else {
+          trims.forEach((t) => {
+            const trow = document.createElement("div");
+            trow.className = "trim-row";
+
+            const nameSpan = document.createElement("span");
+            nameSpan.className = "trim-name";
+            nameSpan.textContent = t.trim;
+
+            const engSpan = document.createElement("span");
+            engSpan.className = "trim-engine";
+            if (t.engine) engSpan.textContent = t.engine;
+
+            trow.appendChild(nameSpan);
+            trow.appendChild(engSpan);
+
+            trow.addEventListener("click", (e) => {
+              e.stopPropagation();
+              showTrim(make, year, t);
+            });
+
+            sub.appendChild(trow);
+          });
+        }
+
+        row.after(sub);
+        row.dataset.open = "true";
+        toggleEl.textContent = "–";
+      }
+
+      // Update right panel for the year (overview)
+      showYear(make, year);
+    }
+
+    function showYear(make, year) {
+      contentEl.innerHTML = `
+        <h2>${make} – ${year}</h2>
+        <div id="results">
+          <p>You selected <strong>${make}</strong> for the year <strong>${year}</strong>.</p>
+          <p>Click a model/trim under this year in the left menu to see more details.</p>
+          <button
+            id="requestBtn"
+            onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
+            Request a Vehicle
+          </button>
+        </div>
+      `;
+    }
+
+    function showTrim(make, year, trimObj) {
+      const engineInfo = trimObj.engine
+        ? `<p><strong>Engine:</strong> ${trimObj.engine}</p>`
+        : "";
+
+      contentEl.innerHTML = `
+        <h2>${make} – ${year} – ${trimObj.trim}</h2>
+        <div id="results">
+          <p>You selected <strong>${make}</strong> – <strong>${year}</strong> – <strong>${trimObj.trim}</strong>.</p>
+          ${engineInfo}
+          <p>
+            Later this panel will show detailed systems and torque specs
+            for this exact configuration.
+          </p>
+          <button
+            id="requestBtn"
+            onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
+            Request a Vehicle
+          </button>
+        </div>
+      `;
+    }
+
+    // ----------------------------
+    // BUILD ALPHABET BAR
+    // ----------------------------
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach((letter) => {
+      const el = document.createElement("div");
+      el.className = "alpha-letter";
+      el.textContent = letter;
+      el.addEventListener("click", () => scrollToLetter(letter));
+      alphaBarEl.appendChild(el);
+    });
+
+    function scrollToLetter(letter) {
+      const li = firstMakeForLetter[letter];
+      if (!li) return;
+      const sidebar = document.getElementById("sidebar");
+      sidebar.scrollTo({ top: li.offsetTop - 8, behavior: "smooth" });
+    }
+  </script>
 </body>
 </html>
