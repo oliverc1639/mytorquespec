@@ -160,6 +160,24 @@
     color: #9fd3ff;
   }
 
+  /* trim list under a year */
+  .trim-list {
+    padding: 2px 0 4px 48px;
+    background: #101318;
+    border-bottom: 1px solid #1f2328;
+  }
+
+  .trim-row {
+    padding: 2px 10px;
+    font-size: 11.5px;
+    cursor: pointer;
+    color: #d0e2ff;
+  }
+
+  .trim-row:hover {
+    background: #1c2127;
+  }
+
   /* RIGHT CONTENT */
   #content {
     flex: 1;
@@ -826,6 +844,8 @@ function toggleMake(li) {
     for (let year = range.end; year >= range.start; year--) {
       const row = document.createElement("div");
       row.className = "year-row";
+      row.dataset.make = make;
+      row.dataset.year = String(year);
 
       const yearToggle = document.createElement("span");
       yearToggle.className = "year-toggle";
@@ -840,7 +860,7 @@ function toggleMake(li) {
 
       row.addEventListener("click", (e) => {
         e.stopPropagation();
-        showYear(make, year);
+        toggleYear(row, make, year);
       });
 
       sub.appendChild(row);
@@ -856,15 +876,15 @@ function toggleMake(li) {
 
   li.after(sub);
 
+  const rangeText = range
+    ? `Years listed from ${range.start} to ${range.end}. Click a year to see trims (where available) and future torque specs.`
+    : `Year range not added yet. We'll fill this in later.`;
+
   contentEl.innerHTML = `
     <h2>${make}</h2>
     <div id="results">
       <p>You selected <strong>${make}</strong>.</p>
-      ${
-        range
-          ? `<p>Years listed from ${range.start} to ${range.end}. Click a year to see trims (where available) and future torque specs.</p>`
-          : `<p>Year range not added yet. We'll fill this in later.</p>`
-      }
+      <p>${rangeText}</p>
       <button
         id="requestBtn"
         onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
@@ -880,33 +900,103 @@ function removeSubList(li) {
 }
 
 // ----------------------------
-// WHEN A YEAR IS CLICKED
+// TOGGLE A YEAR (SHOW/HIDE TRIMS)
 // ----------------------------
-function showYear(make, year) {
+function toggleYear(row, make, year) {
+  const open = row.dataset.open === "true";
+  const yearToggle = row.querySelector(".year-toggle");
+
+  // If open, close and remove trim list
+  if (open) {
+    row.dataset.open = "false";
+    yearToggle.textContent = "+";
+    const next = row.nextElementSibling;
+    if (next && next.classList.contains("trim-list")) {
+      next.remove();
+    }
+    // still show year info on the right
+    showYear(make, year);
+    return;
+  }
+
+  // Open this year
+  row.dataset.open = "true";
+  yearToggle.textContent = "–";
+
+  // Remove an existing trim-list if somehow present
+  const next = row.nextElementSibling;
+  if (next && next.classList.contains("trim-list")) {
+    next.remove();
+  }
+
   const trimsForMake = trimsByMakeYear[make] || {};
   const trims = trimsForMake[year] || [];
 
-  let trimsHtml = "";
-  if (trims.length > 0) {
-    trimsHtml = `
-      <h3>Trims for ${make} ${year}</h3>
-      <ul>
-        ${trims.map(t => `<li>${t}</li>`).join("")}
-      </ul>
-      <p>Torque specs for these trims are coming soon.</p>
-    `;
+  const trimList = document.createElement("div");
+  trimList.className = "trim-list";
+
+  if (trims.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "trim-row";
+    empty.textContent = "Trims coming soon.";
+    // No click because it's just text
+    trimList.appendChild(empty);
   } else {
-    trimsHtml = `
-      <p>Later, this is where you'll see systems (engine, suspension, wheels)
-         and finally torque specs for each component.</p>
-    `;
+    trims.forEach((trim) => {
+      const tr = document.createElement("div");
+      tr.className = "trim-row";
+      tr.textContent = trim;
+      tr.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showTrim(make, year, trim);
+      });
+      trimList.appendChild(tr);
+    });
   }
+
+  // Insert trim list right after the year row
+  row.after(trimList);
+
+  // Update right panel with year info
+  showYear(make, year, trims.length > 0);
+}
+
+// ----------------------------
+// RIGHT PANEL: YEAR-LEVEL VIEW
+// ----------------------------
+function showYear(make, year, hasTrims = false) {
+  const message = hasTrims
+    ? "Select a trim from the list under this year to see torque specs (coming soon)."
+    : "Later, this is where you'll see systems (engine, suspension, wheels) and torque specs for each component.";
 
   contentEl.innerHTML = `
     <h2>${make} – ${year}</h2>
     <div id="results">
       <p>You selected <strong>${make}</strong> for the year <strong>${year}</strong>.</p>
-      ${trimsHtml}
+      <p>${message}</p>
+      <button
+        id="requestBtn"
+        onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
+        Request a Vehicle
+      </button>
+    </div>
+  `;
+}
+
+// ----------------------------
+// RIGHT PANEL: TRIM-LEVEL VIEW
+// ----------------------------
+function showTrim(make, year, trim) {
+  contentEl.innerHTML = `
+    <h2>${make} – ${year}</h2>
+    <div id="results">
+      <p>You selected:</p>
+      <ul>
+        <li><strong>Make:</strong> ${make}</li>
+        <li><strong>Year:</strong> ${year}</li>
+        <li><strong>Trim:</strong> ${trim}</li>
+      </ul>
+      <p>Torque specs for this trim are coming soon.</p>
       <button
         id="requestBtn"
         onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSclshIhWPwYpkv-S0LoTd7CuE6HRRd_GeImK3LLLtfRRIM86Q/viewform?usp=publish-editor','_blank')">
