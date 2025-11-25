@@ -205,7 +205,7 @@
       margin-left: auto;
     }
 
-    /* nested content under a trim (systems, torque specs later) */
+    /* nested content under a trim (4th dropdown: engines / systems) */
     .trim-sublist {
       background: #090b10;
       border-top: 1px solid #222;
@@ -360,7 +360,7 @@
       "Workhorse","Yellow Cab","Yugo","Zundapp"
     ];
 
-    // Year ranges for makes we know (all A-brands + others)
+    // Year ranges for makes we know
     const makeYearRanges = {
       // A BRANDS
       "Abarth": { start: 1950, end: 1969 },
@@ -437,7 +437,7 @@
       "Dual-Ghia": { start: 1956, end: 1963 },
       "Duesenberg": { start: 1928, end: 1937 },
       "Durant": { start: 1921, end: 1932 },
-      // E BRANDS...
+      // E+ (rest same as before) ...
       "Eagle": { start: 1988, end: 1998 },
       "Edsel": { start: 1958, end: 1960 },
       "Elcar": { start: 1916, end: 1931 },
@@ -644,103 +644,197 @@
     const modelData = {
       "Abarth": {
         1969: [
-          { trim: "1000" },
-          { trim: "1300" },
-          { trim: "2000" },
-          { trim: "SIMCA" }
+          { trim: "1000", engines: ["982cc L4"] },
+          { trim: "1300", engines: ["1.3L L4"] },
+          { trim: "2000", engines: ["1.9L L4"] },
+          { trim: "SIMCA", engines: ["1.3L L4", "2.0L L4"] }
         ],
         1968: [
-          { trim: "1000" },
-          { trim: "1300" },
-          { trim: "2000" },
-          { trim: "SIMCA" }
+          { trim: "1000", engines: ["982cc L4"] },
+          { trim: "1300", engines: ["1.3L L4"] },
+          { trim: "2000", engines: ["1.9L L4"] },
+          { trim: "SIMCA", engines: ["1.3L L4", "2.0L L4"] }
         ],
         1967: [
-          { trim: "1000" },
-          { trim: "1300" },
-          { trim: "2000" },
-          { trim: "SIMCA" }
+          { trim: "1000", engines: ["982cc L4"] },
+          { trim: "1300", engines: ["1.3L L4"] },
+          { trim: "2000", engines: ["1.9L L4"] },
+          { trim: "SIMCA", engines: ["1.3L L4", "2.0L L4"] }
         ],
         1966: [
-          { trim: "1000" },
-          { trim: "1150" },
-          { trim: "1600" },
-          { trim: "2000" },
-          { trim: "850" },
-          { trim: "SIMCA" }
+          { trim: "1000", engines: ["982cc L4"] },
+          { trim: "1150", engines: ["1.1L L4"] },
+          { trim: "1600", engines: ["1.6L L4"] },
+          { trim: "2000", engines: ["1.9L L4"] },
+          { trim: "850",  engines: ["847cc L4"] },
+          { trim: "SIMCA", engines: ["1.3L L4", "2.0L L4"] }
         ],
         1965: [
-          { trim: "1000" },
-          { trim: "1600" },
-          { trim: "850" },
-          { trim: "SIMCA" }
+          { trim: "1000", engines: ["982cc L4"] },
+          { trim: "1600", engines: ["1.6L L4"] },
+          { trim: "850",  engines: ["847cc L4"] },
+          { trim: "SIMCA", engines: ["1.3L L4", "2.0L L4"] }
         ],
         1964: [
-          { trim: "1000" },
-          { trim: "1600" },
-          { trim: "850" },
-          { trim: "SIMCA" }
+          { trim: "1000", engines: ["982cc L4"] },
+          { trim: "1600", engines: ["1.6L L4"] },
+          { trim: "850",  engines: ["847cc L4"] },
+          { trim: "SIMCA", engines: ["1.3L L4", "2.0L L4"] }
         ],
         1963: [
-          { trim: "1000" },
-          { trim: "1600" },
-          { trim: "850" },
-          { trim: "SIMCA" }
+          { trim: "1000", engines: ["982cc L4"] },
+          { trim: "1600", engines: ["1.6L L4"] },
+          { trim: "850",  engines: ["847cc L4"] },
+          { trim: "SIMCA", engines: ["1.3L L4", "2.0L L4"] }
         ],
         1962: [
-          { trim: "1000" },
-          { trim: "1600" },
-          { trim: "850" },
-          { trim: "SIMCA" }
+          { trim: "1000", engines: ["982cc L4"] },
+          { trim: "1600", engines: ["1.6L L4"] },
+          { trim: "850",  engines: ["847cc L4"] },
+          { trim: "SIMCA", engines: ["1.3L L4", "2.0L L4"] }
         ],
         1961: [
-          { trim: "1600", engine: "1.6L L4" },
-          { trim: "750" },
-          { trim: "850" }
+          { trim: "1600", engines: ["1.6L L4"] },
+          { trim: "750",  engines: ["747cc L4"] },
+          { trim: "850",  engines: ["833cc L4"] }
         ],
         1960: [
-          { trim: "1600" },
-          { trim: "750" },
-          { trim: "850" }
+          { trim: "1600", engines: ["1.6L L4"] },
+          { trim: "750",  engines: ["747cc L4"] },
+          { trim: "850",  engines: ["833cc L4"] }
         ],
         1959: [
-          { trim: "750" }
+          { trim: "750", engines: ["747cc L4"] }
         ],
         1958: [
-          { trim: "750" }
+          { trim: "750", engines: ["747cc L4"] }
         ],
         1957: [
-          { trim: "750" }
+          { trim: "750", engines: ["747cc L4"] }
         ],
         1956: [
-          { trim: "750" }
+          { trim: "750", engines: ["747cc L4"] }
         ],
         1955: [
-          { trim: "204" },
-          { trim: "205" }
+          { trim: "204", engines: ["1.1L L4"] },
+          { trim: "205", engines: ["1.1L L4"] }
         ],
         1954: [
-          { trim: "204" },
-          { trim: "205" }
+          { trim: "204", engines: ["1.1L L4"] },
+          { trim: "205", engines: ["1.1L L4"] }
         ],
         1953: [
-          { trim: "204" },
-          { trim: "205" }
+          { trim: "204", engines: ["1.1L L4"] },
+          { trim: "205", engines: ["1.1L L4"] }
         ],
         1952: [
-          { trim: "204" },
-          { trim: "205" }
+          { trim: "204", engines: ["1.1L L4"] },
+          { trim: "205", engines: ["1.1L L4"] }
         ],
         1951: [
-          { trim: "204" },
-          { trim: "205" }
+          { trim: "204", engines: ["1.1L L4"] },
+          { trim: "205", engines: ["1.1L L4"] }
         ],
         1950: [
-          { trim: "204" },
-          { trim: "205" }
+          { trim: "204", engines: ["1.1L L4"] },
+          { trim: "205", engines: ["1.1L L4"] }
+        ]
+      },
+
+      "AC": {
+        1973: [
+          { trim: "428" }
+        ],
+        1972: [
+          { trim: "428" }
+        ],
+        1971: [
+          { trim: "428" }
+        ],
+        1970: [
+          { trim: "428" }
+        ],
+        1969: [
+          { trim: "428" }
+        ],
+        1968: [
+          { trim: "428" }
+        ],
+        1967: [
+          { trim: "428" }
+        ],
+        1963: [
+          { trim: "ACE" },
+          { trim: "ACECA" },
+          { trim: "GREYHOUND" }
+        ],
+        1962: [
+          { trim: "ACE" },
+          { trim: "ACECA" },
+          { trim: "GREYHOUND" }
+        ],
+        1961: [
+          { trim: "ACE" },
+          { trim: "ACECA" },
+          { trim: "GREYHOUND" }
+        ],
+        1960: [
+          { trim: "ACE" },
+          { trim: "ACECA" },
+          { trim: "GREYHOUND" }
+        ],
+        1959: [
+          { trim: "ACE" },
+          { trim: "ACECA" },
+          { trim: "GREYHOUND" }
+        ],
+        1958: [
+          { trim: "ACE" },
+          { trim: "ACECA" },
+          { trim: "TWO-LITRE" }
+        ],
+        1957: [
+          { trim: "ACE" },
+          { trim: "ACECA" },
+          { trim: "TWO-LITRE" }
+        ],
+        1956: [
+          { trim: "ACE" },
+          { trim: "ACECA" },
+          { trim: "TWO-LITRE" }
+        ],
+        1955: [
+          { trim: "ACE" },
+          { trim: "ACECA" },
+          { trim: "TWO-LITRE" }
+        ],
+        1954: [
+          { trim: "ACE" },
+          { trim: "TWO-LITRE" }
+        ],
+        1953: [
+          { trim: "ACE" },
+          { trim: "TWO-LITRE" }
+        ],
+        1952: [
+          { trim: "TWO-LITRE" }
+        ],
+        1951: [
+          { trim: "TWO-LITRE" }
+        ],
+        1950: [
+          { trim: "TWO-LITRE" }
+        ],
+        1949: [
+          { trim: "TWO-LITRE" }
+        ],
+        1948: [
+          { trim: "TWO-LITRE" }
+        ],
+        1947: [
+          { trim: "TWO-LITRE" }
         ]
       }
-      // add more makes later
     };
 
     const makeListEl = document.getElementById("makeList");
@@ -920,7 +1014,17 @@
 
             const engSpan = document.createElement("span");
             engSpan.className = "trim-engine";
-            if (t.engine) engSpan.textContent = t.engine;
+
+            // Show first engine if we have engines array, else single engine if present
+            let displayEngine = "";
+            if (t.engines && t.engines.length > 0) {
+              displayEngine = t.engines[0];
+            } else if (t.engine) {
+              displayEngine = t.engine;
+            }
+            if (displayEngine) {
+              engSpan.textContent = displayEngine;
+            }
 
             trow.appendChild(trimToggle);
             trow.appendChild(nameSpan);
@@ -945,7 +1049,7 @@
     }
 
     // ----------------------------
-    // WHEN A TRIM IS CLICKED
+    // WHEN A TRIM IS CLICKED (4th dropdown)
     // ----------------------------
     function handleTrimClick(make, year, trimObj, row) {
       const alreadyOpen = row.dataset.open === "true";
@@ -967,12 +1071,27 @@
 
         const sub = document.createElement("div");
         sub.className = "trim-sublist";
-        sub.innerHTML = `
-          <div><strong>Systems & components coming soon</strong></div>
-          <div>Make: ${make}</div>
-          <div>Year: ${year}</div>
-          <div>Model/Trim: ${trimObj.trim}</div>
-        `;
+
+        if (trimObj.engines && trimObj.engines.length > 0) {
+          // 4th dropdown for Abarth: engines list, similar to RockAuto
+          let html = `<div><strong>Available engines</strong></div>`;
+          trimObj.engines.forEach((eng) => {
+            html += `<div>• ${eng}</div>`;
+          });
+          sub.innerHTML = html;
+        } else if (trimObj.engine) {
+          sub.innerHTML = `
+            <div><strong>Engine</strong></div>
+            <div>• ${trimObj.engine}</div>
+          `;
+        } else {
+          sub.innerHTML = `
+            <div><strong>Systems & components coming soon</strong></div>
+            <div>Make: ${make}</div>
+            <div>Year: ${year}</div>
+            <div>Model/Trim: ${trimObj.trim}</div>
+          `;
+        }
 
         row.after(sub);
         row.dataset.open = "true";
@@ -999,9 +1118,13 @@
     }
 
     function showTrim(make, year, trimObj) {
-      const engineInfo = trimObj.engine
-        ? `<p><strong>Engine:</strong> ${trimObj.engine}</p>`
-        : "";
+      let engineInfo = "";
+
+      if (trimObj.engines && trimObj.engines.length > 0) {
+        engineInfo = `<p><strong>Engines:</strong> ${trimObj.engines.join(", ")}</p>`;
+      } else if (trimObj.engine) {
+        engineInfo = `<p><strong>Engine:</strong> ${trimObj.engine}</p>`;
+      }
 
       contentEl.innerHTML = `
         <h2>${make} – ${year} – ${trimObj.trim}</h2>
