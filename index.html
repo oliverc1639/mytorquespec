@@ -205,12 +205,53 @@
       margin-left: auto;
     }
 
-    /* nested content under a trim (4th dropdown: engines / systems) */
+    /* nested content under a trim (4th dropdown: engines) */
     .trim-sublist {
       background: #090b10;
       border-top: 1px solid #222;
       border-bottom: 1px solid #222;
-      padding: 4px 10px 4px 64px;
+      padding: 4px 0;
+      font-size: 11px;
+      color: #cbd5e0;
+    }
+
+    .engine-row {
+      padding: 2px 10px 2px 78px;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #cbd5e0;
+    }
+
+    .engine-row:hover {
+      background: #151821;
+    }
+
+    .engine-toggle {
+      width: 13px;
+      height: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      border: 1px solid #555;
+      background: #222;
+      color: #eee;
+      margin-left: -14px;
+      flex-shrink: 0;
+    }
+
+    .engine-name {
+      /* text for engine name */
+    }
+
+    .engine-sublist {
+      background: #05060a;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+      padding: 4px 10px 4px 92px;
       font-size: 11px;
       color: #cbd5e0;
     }
@@ -1049,7 +1090,7 @@
     }
 
     // ----------------------------
-    // WHEN A TRIM IS CLICKED (4th dropdown)
+    // WHEN A TRIM IS CLICKED (4th dropdown: engines)
     // ----------------------------
     function handleTrimClick(make, year, trimObj, row) {
       const alreadyOpen = row.dataset.open === "true";
@@ -1072,25 +1113,49 @@
         const sub = document.createElement("div");
         sub.className = "trim-sublist";
 
+        // Build engine rows with their own + toggle
+        let enginesArr = [];
         if (trimObj.engines && trimObj.engines.length > 0) {
-          // 4th dropdown for Abarth: engines list, similar to RockAuto
-          let html = `<div><strong>Available engines</strong></div>`;
-          trimObj.engines.forEach((eng) => {
-            html += `<div>• ${eng}</div>`;
-          });
-          sub.innerHTML = html;
+          enginesArr = trimObj.engines;
         } else if (trimObj.engine) {
-          sub.innerHTML = `
-            <div><strong>Engine</strong></div>
-            <div>• ${trimObj.engine}</div>
-          `;
+          enginesArr = [trimObj.engine];
+        }
+
+        if (enginesArr.length > 0) {
+          enginesArr.forEach((eng) => {
+            const erow = document.createElement("div");
+            erow.className = "engine-row";
+            erow.dataset.engine = eng;
+
+            const etoggle = document.createElement("span");
+            etoggle.className = "engine-toggle";
+            etoggle.textContent = "+";
+
+            const ename = document.createElement("span");
+            ename.className = "engine-name";
+            ename.textContent = eng;
+
+            erow.appendChild(etoggle);
+            erow.appendChild(ename);
+
+            erow.addEventListener("click", (e) => {
+              e.stopPropagation();
+              handleEngineClick(make, year, trimObj, eng, erow);
+            });
+
+            sub.appendChild(erow);
+          });
         } else {
-          sub.innerHTML = `
-            <div><strong>Systems & components coming soon</strong></div>
+          // No engine info yet, just placeholder
+          const p = document.createElement("div");
+          p.className = "engine-sublist";
+          p.innerHTML = `
+            <div><strong>Torque specs coming soon</strong></div>
             <div>Make: ${make}</div>
             <div>Year: ${year}</div>
             <div>Model/Trim: ${trimObj.trim}</div>
           `;
+          sub.appendChild(p);
         }
 
         row.after(sub);
@@ -1100,6 +1165,43 @@
 
       // Update right panel with the selected trim details
       showTrim(make, year, trimObj);
+    }
+
+    // ----------------------------
+    // 5th LEVEL: ENGINE CLICK
+    // ----------------------------
+    function handleEngineClick(make, year, trimObj, engine, row) {
+      const alreadyOpen = row.dataset.open === "true";
+      const toggleEl = row.querySelector(".engine-toggle");
+      const next = row.nextElementSibling;
+
+      if (alreadyOpen) {
+        if (next && next.classList.contains("engine-sublist")) {
+          next.remove();
+        }
+        row.dataset.open = "false";
+        toggleEl.textContent = "+";
+      } else {
+        if (next && next.classList.contains("engine-sublist")) {
+          next.remove();
+        }
+
+        const sub = document.createElement("div");
+        sub.className = "engine-sublist";
+        sub.innerHTML = `
+          <div><strong>Torque specs coming soon</strong></div>
+          <div>Make: ${make}</div>
+          <div>Year: ${year}</div>
+          <div>Model/Trim: ${trimObj.trim}</div>
+          <div>Engine: ${engine}</div>
+        `;
+
+        row.after(sub);
+        row.dataset.open = "true";
+        toggleEl.textContent = "–";
+      }
+
+      // Right panel can stay as trim-level info for now
     }
 
     function showYear(make, year) {
